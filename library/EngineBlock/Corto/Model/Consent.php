@@ -2,6 +2,7 @@
 
 use OpenConext\Component\EngineBlockMetadata\Entity\ServiceProvider;
 use OpenConext\EngineBlock\Authentication\Value\ConsentType;
+use Psr\Log\LoggerInterface;
 
 class EngineBlock_Corto_Model_Consent
 {
@@ -30,18 +31,25 @@ class EngineBlock_Corto_Model_Consent
     private $_databaseConnectionFactory;
 
     /**
+     * @var LoggerInterface
+     */
+    private $_log;
+
+    /**
      * @param string $tableName
      * @param bool $mustStoreValues
      * @param EngineBlock_Saml2_ResponseAnnotationDecorator $response
      * @param array $responseAttributes
      * @param EngineBlock_Database_ConnectionFactory $databaseConnectionFactory
+     * @param LoggerInterface $log
      */
     public function __construct(
         $tableName,
         $mustStoreValues,
         EngineBlock_Saml2_ResponseAnnotationDecorator $response,
         array $responseAttributes,
-        EngineBlock_Database_ConnectionFactory $databaseConnectionFactory
+        EngineBlock_Database_ConnectionFactory $databaseConnectionFactory,
+        LoggerInterface $log
     )
     {
         $this->_tableName = $tableName;
@@ -49,6 +57,7 @@ class EngineBlock_Corto_Model_Consent
         $this->_response = $response;
         $this->_responseAttributes = $responseAttributes;
         $this->_databaseConnectionFactory = $databaseConnectionFactory;
+        $this->_log = $log;
     }
 
     public function explicitConsentWasGivenFor(ServiceProvider $serviceProvider) {
@@ -146,6 +155,13 @@ class EngineBlock_Corto_Model_Consent
             );
         }
 
+        $this->_log->notice('Stored consent in database', array(
+            'hashed_user_id' => $parameters[0],
+            'service_id' => $parameters[1],
+            'attribute' => $parameters[2],
+            'consent_type' => $parameters[3]
+        ));
+
         return true;
     }
 
@@ -168,15 +184,23 @@ class EngineBlock_Corto_Model_Consent
                 $consentType,
             );
 
+            $this->_log->info('Looking for consent in database', array(
+                'hashed_user_id' => $parameters[0],
+                'service_id' => $parameters[1],
+                'attribute' => $parameters[2],
+                'consent_type' => $parameters[3]
+            ));
+
             /** @var $statement PDOStatement */
             $statement = $dbh->prepare($query);
             $statement->execute($parameters);
             $rows = $statement->fetchAll();
 
             if (count($rows) < 1) {
-                // No stored consent found
+                $this->_log->info('No stored consent found');
                 return false;
             }
+            $this->_log->info('Stored consent found');
 
             return true;
         } catch (PDOException $e) {
