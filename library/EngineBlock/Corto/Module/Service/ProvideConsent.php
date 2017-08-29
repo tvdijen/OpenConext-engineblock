@@ -55,6 +55,8 @@ class EngineBlock_Corto_Module_Service_ProvideConsent
             $application->flushLog(
                 'Activated additional logging for one or more SPs in the SP requester chain, or the IdP'
             );
+            // Store requireAdditionalLogging state for this request so the ProcessConsent step can pick it up
+            $_SESSION['consent'][$response->getId()]['requireAdditionalLogging'] = true;
 
             $log = $application->getLogInstance();
             $log->info('Raw HTTP request', array('http_request' => (string) $application->getHttpRequest()));

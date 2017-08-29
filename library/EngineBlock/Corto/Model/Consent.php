@@ -155,7 +155,7 @@ class EngineBlock_Corto_Model_Consent
             );
         }
 
-        $this->_log->notice('Stored consent in database', array(
+        $this->_log->info('Stored consent in database', array(
             'hashed_user_id' => $parameters[0],
             'service_id' => $parameters[1],
             'attribute' => $parameters[2],

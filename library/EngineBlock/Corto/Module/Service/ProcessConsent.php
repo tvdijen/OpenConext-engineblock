@@ -43,6 +43,14 @@ class EngineBlock_Corto_Module_Service_ProcessConsent
                 "Stored response for ResponseID '{$_POST['ID']}' not found"
             );
         }
+        if ( isset($_SESSION['consent'][$_POST['ID']]['requireAdditionalLogging'])
+            && ($_SESSION['consent'][$_POST['ID']]['requireAdditionalLogging']) ) {
+            $application = EngineBlock_ApplicationSingleton::getInstance();
+            $application->flushLog(
+                'Activated additional logging based on requireAdditionalLogging in session for this request'
+            );
+        }
+
         /** @var SAML2_Response|EngineBlock_Saml2_ResponseAnnotationDecorator $response */
         $response = $_SESSION['consent'][$_POST['ID']]['response'];
 
