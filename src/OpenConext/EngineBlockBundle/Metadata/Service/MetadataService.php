@@ -50,8 +50,12 @@ class MetadataService
      * @param MetadataRepositoryInterface $metadataRepository
      * @param StepupEndpoint $stepupEndpoint
      */
-    public function __construct(MetadataFactory $factory, MetadataEntityFactory $metadataEntityFactory, MetadataRepositoryInterface $metadataRepository, StepupEndpoint $stepupEndpoint)
-    {
+    public function __construct(
+        MetadataFactory $factory,
+        MetadataEntityFactory $metadataEntityFactory,
+        MetadataRepositoryInterface $metadataRepository,
+        StepupEndpoint $stepupEndpoint
+    ) {
         $this->factory = $factory;
         $this->metadataEntityFactory = $metadataEntityFactory;
         $this->metadataRepository = $metadataRepository;
