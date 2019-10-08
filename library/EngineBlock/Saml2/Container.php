@@ -39,7 +39,7 @@ final class EngineBlock_Saml2_Container extends AbstractContainer
         $this->logger = $logger;
     }
 
-    public function getLogger()
+    public function getLogger(): PSR\Log\LoggerInterface
     {
         return $this->logger;
     }
@@ -49,17 +49,17 @@ final class EngineBlock_Saml2_Container extends AbstractContainer
      *
      * @return string
      */
-    public function generateId()
+    public function generateId(): string
     {
         return '_' . bin2hex(openssl_random_pseudo_bytes((int)((self::ID_LENGTH - 1)/2)));
     }
 
-    public function debugMessage($message, $type)
+    public function debugMessage($message, $type): void
     {
         $this->getLogger()->debug("SAML2 library debug message ($type)", array('message' => $message));
     }
 
-    public function redirect($url, $data = array())
+    public function redirect($url, $data = array()): void
     {
         throw new BadMethodCallException(
             sprintf(
@@ -70,7 +70,7 @@ final class EngineBlock_Saml2_Container extends AbstractContainer
         );
     }
 
-    public function postRedirect($url, $data = array())
+    public function postRedirect($url, $data = array()): void
     {
         throw new BadMethodCallException(
             sprintf(
@@ -79,5 +79,24 @@ final class EngineBlock_Saml2_Container extends AbstractContainer
                 __METHOD__
             )
         );
+    }
+
+    /**
+     * @return string
+     */
+    public function getTempDir(): string
+    {
+        return sys_get_temp_dir();
+    }
+
+    /**
+     * @param string $filename
+     * @param string $data
+     * @param int|null $mode
+     * @return void
+     */
+    public function writeFile(string $filename, string $data, int $mode = null): void
+    {
+        // We laugh about it
     }
 }
