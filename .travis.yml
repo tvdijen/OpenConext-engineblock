@@ -37,7 +37,7 @@ before_install:
 
 before_script:
   - phpenv config-add .travis.php.ini
-  - sed -i 's,apc,array,' ~/build/OpenConext/OpenConext-engineblock/app/config/config.yml
+  - sed -i 's,apc,array,' ~/build/tvdijen/OpenConext-engineblock/app/config/config.yml
   # Copy apache keys
   - sudo ln -s "$(pwd)"/ci/travis/files/ /etc/openconext
   # Set rights to private key to reflect prod
@@ -76,14 +76,10 @@ before_script:
 script:
   - ant $COMMAND
 
-branches:
-  only:
-    - master
-
 after_failure:
   - sudo tail -500 /var/log/apache2/error.log
   - sudo tail -500 /var/log/apache2/access.log
-  - cat ~/build/OpenConext/OpenConext-engineblock/app/logs/test/test.log
+  - cat ~/build/tvdijen/OpenConext-engineblock/app/logs/test/test.log
   - sudo tail -500 /var/log/syslog
   - sudo tail -500 /tmp/selenium-log
 
