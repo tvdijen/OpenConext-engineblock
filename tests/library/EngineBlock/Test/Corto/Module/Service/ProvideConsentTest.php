@@ -30,6 +30,7 @@ use OpenConext\EngineBlockBundle\Authentication\AuthenticationStateInterface;
 use SAML2\Assertion;
 use SAML2\AuthnRequest;
 use SAML2\Response;
+use SAML2\XML\saml\Issuer;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
@@ -325,7 +326,11 @@ class EngineBlock_Test_Corto_Module_Service_ProvideConsentTest extends PHPUnit_F
     {
         $sspResponse = new Response();
         $sspResponse->setInResponseTo('EBREQUEST');
-        $sspResponse->setIssuer('testSp');
+
+        $issuer = new Issuer();
+        $issuer->setValue('testSp');
+
+        $sspResponse->setIssuer($issuer);
         $sspResponse->setAssertions([]);
 
         $sspResponse = new EngineBlock_Saml2_ResponseAnnotationDecorator($sspResponse);
