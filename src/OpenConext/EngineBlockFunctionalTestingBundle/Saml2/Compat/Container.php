@@ -56,7 +56,7 @@ class Container extends AbstractContainer
      * Get a PSR-3 compatible logger.
      * @return Psr\Log\LoggerInterface
      */
-    public function getLogger()
+    public function getLogger(): Psr\Log\LoggerInterface
     {
         return new SyslogLogger();
     }
@@ -64,7 +64,7 @@ class Container extends AbstractContainer
     /**
      * Generate a random identifier for identifying SAML2 documents.
      */
-    public function generateId()
+    public function generateId(): string
     {
         return self::ID_PREFIX . rand(0, 100000000);
     }
@@ -82,7 +82,7 @@ class Container extends AbstractContainer
      * @param string $type
      * @return void
      */
-    public function debugMessage($message, $type)
+    public function debugMessage($message, $type): void
     {
         if ($message instanceof \DOMElement) {
             $message = $message->ownerDocument->saveXML();
@@ -98,7 +98,7 @@ class Container extends AbstractContainer
      * @param array $data
      * @return void
      */
-    public function redirect($url, $data = [])
+    public function redirect($url, $data = []): void
     {
         throw new NotImplementedException(sprintf('SSP/SAML2 Redirect not implemented! URL: "%s', $url));
     }
@@ -108,9 +108,9 @@ class Container extends AbstractContainer
      *
      * @param string $url
      * @param array $data
-     * @return $this
+     * @return void
      */
-    public function postRedirect($url, $data = [])
+    public function postRedirect($url, $data = []): void
     {
         $formData = '';
         foreach ($data as $name => $value) {
@@ -156,7 +156,6 @@ class Container extends AbstractContainer
 </html>
 HTML
         );
-        return $this;
     }
 
     public function getPostResponse()
@@ -176,5 +175,23 @@ HTML
         $dom->formatOutput = true;
         $xml = $dom->saveXml();
         return $xml;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTempDir(): string
+    {
+        return sys_get_temp_dir();
+    }
+    /**
+     * @param string $filename
+     * @param string $data
+     * @param int|null $mode
+     * @return void
+     */
+    public function writeFile(string $filename, string $data, int $mode = null): void
+    {
+        // We laugh about it
     }
 }
