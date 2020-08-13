@@ -469,10 +469,10 @@ class EngineBlock_Corto_ProxyServer
             ],
             'Comparison' => 'minimal',
         ]);
-        $sspMessage->setNameId(NameID::fromArray([
-            'Value' => $nameId->value,
-            'Format' => Constants::NAMEID_UNSPECIFIED,
-        ]));
+        $nameIdOverwrite = new NameID();
+        $nameIdOverwrite->setValue($nameId->getValue());
+        $nameIdOverwrite->setFormat(Constants::NAMEID_UNSPECIFIED);
+        $sspMessage->setNameId($nameIdOverwrite);
 
         // Link with the original Request
         $authnRequestRepository = new EngineBlock_Saml2_AuthnRequestSessionRepository($this->_logger);
@@ -579,25 +579,25 @@ class EngineBlock_Corto_ProxyServer
         // Copy over the NameID for now...
         // (further on in the filters we'll have more info and set this to something better)
         $sourceNameId = $sourceAssertion->getNameId();
-        if ($sourceNameId->value && $sourceNameId->Format) {
+        if ($sourceNameId->getValue() && $sourceNameId->getFormat()) {
             $newAssertion->setNameId($sourceNameId);
         }
 
         // Set up the Subject Confirmation element.
         $subjectConfirmation = new SubjectConfirmation();
-        $subjectConfirmation->Method = Constants::CM_BEARER;
+        $subjectConfirmation->setMethod(Constants::CM_BEARER);
         $newAssertion->setSubjectConfirmation(array($subjectConfirmation));
         $subjectConfirmationData = new SubjectConfirmationData();
-        $subjectConfirmation->SubjectConfirmationData = $subjectConfirmationData;
+        $subjectConfirmation->setSubjectConfirmationData($subjectConfirmationData);
 
         // Confirm where we are sending it.
         $acs = $this->getRequestAssertionConsumer($request);
-        $subjectConfirmationData->Recipient = $acs->location;
+        $subjectConfirmationData->setRecipient($acs->location);
 
         // Confirm that this is in response to their AuthnRequest (unless, you know, it isn't).
         if (!$request->isUnsolicited()) {
-            /** @var \SAML2\AuthnRequest $request */
-            $subjectConfirmationData->InResponseTo = $request->getId();
+            /** @var AuthnRequest $request */
+            $subjectConfirmationData->setInResponseTo($request->getId());
         }
 
         // Note that it is valid for some 5 minutes.
@@ -607,7 +607,7 @@ class EngineBlock_Corto_ProxyServer
             $newAssertion->setSessionNotOnOrAfter($sourceAssertion->getSessionNotOnOrAfter());
         }
         $newAssertion->setNotOnOrAfter($notOnOrAfter);
-        $subjectConfirmationData->NotOnOrAfter = $notOnOrAfter;
+        $subjectConfirmationData->setNotOnOrAfter($notOnOrAfter);
 
         // And only valid for the SP that requested it.
         $newAssertion->setValidAudiences(array($request->getIssuer()));

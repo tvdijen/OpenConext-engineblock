@@ -77,7 +77,7 @@ class EngineBlock_Test_Saml2_NameIdResolverTest extends TestCase
         $this->resolver = new EngineBlock_Test_Saml2_NameIdResolverMock();
     }
 
-    public function testCustomNameId()
+    public function testCustomNameId(): void
     {
         $nameId = new NameID();
         $nameId->setValue('');
@@ -158,24 +158,21 @@ class EngineBlock_Test_Saml2_NameIdResolverTest extends TestCase
         );
     }
 
-    public function testPersistent()
+    public function testPersistent(): void
     {
         $this->markTestSkipped('Fails when switching to other backend, test should not rely on having fixed backend');
 
         // Input
-        $nameId = array(
-            'Format' => 'urn:oasis:names:tc:SAML:2.0:nameid-format:persistent',
-            'Value' => '',
-        );
-        $this->serviceProvider->nameIdFormat = $nameId['Format'];
+        $nameIdFormat = 'urn:oasis:names:tc:SAML:2.0:nameid-format:persistent';
+        $this->serviceProvider->nameIdFormat = $nameIdFormat;
 
         // Run
         $resolvedNameId = $this->resolver->resolve($this->request, $this->response, $this->serviceProvider, $this->collabPersonId);
 
         // Test
         $this->assertEquals(
-            NameID::fromArray($nameId['Format']),
-            $resolvedNameId['Format'],
+            $nameIdFormat,
+            $resolvedNameId->getFormat(),
             'Requesting Persistent gives a persistent identifier'
         );
 
@@ -186,7 +183,7 @@ class EngineBlock_Test_Saml2_NameIdResolverTest extends TestCase
         $this->assertEquals($resolvedNameId, $resolvedNameId2, 'Persistent NameID is persistent');
     }
 
-    public function testTransient()
+    public function testTransient(): void
     {
         global $_SESSION;
         $_SESSION = array();
@@ -242,7 +239,7 @@ class EngineBlock_Test_Saml2_NameIdResolverTest extends TestCase
         );
     }
 
-    public function testNameIDIsAddedAtCorrectLocation()
+    public function testNameIDIsAddedAtCorrectLocation(): void
     {
         global $_SESSION;
         $_SESSION = array();
