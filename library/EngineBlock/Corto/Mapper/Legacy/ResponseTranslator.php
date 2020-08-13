@@ -113,13 +113,6 @@ class EngineBlock_Corto_Mapper_Legacy_ResponseTranslator
             if (is_array($value) && isset($value[EngineBlock_Corto_XmlToArray::TAG_NAME_PFX])) {
                 $value = $this->fromOldFormat($value);
             }
-
-            // 'setCustomNameId' on the ResponseAnnotationDecorator requires an array representation of the NameID. So
-            // convert it if it's a NameID object.
-            if ($privateVar === 'CustomNameId' && $value instanceof NameID) {
-                $value = ['Value' => $value->value, 'Format' => $value->Format];
-            }
-
             $method = 'set' . $privateVar;
             $to->$method($value);
         }
