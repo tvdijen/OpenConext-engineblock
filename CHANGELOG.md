@@ -5,6 +5,56 @@ We will continue to post relevant release notes on the GitHub release page. More
 
 More information about our release strategy can be found in the [Development Guidelines](https://github.com/OpenConext/OpenConext-engineblock/wiki/Development-Guidelines#release-notes) on the EngineBlock wiki.
 
+## 6.14.0
+* Support overriding StepUp EntityId #1279
+* Check for needed parameters before constructing an auth failed response. #1289
+
+## 6.13.0
+
+* Move most HTML from translatable strings into Twig templates, where it
+  belongs. This makes the code more robust and predictable, and reduces
+  the chances of cross site scripting injections. Some translatable strings
+  were changed, see upgrade notes.
+* Install a NPM package update.
+
+## 6.12.2
+
+* Add optional configurable environment-specific ribbon to top-right of UI.
+* Fix some Request Access bugs.
+* Fix Cypress tests.
+* Install NPM package updates and switch to yarn as package manager.
+
+## 6.12.1
+* Repaired tag-release blockage
+
+## 6.12.0
+**Feature**
+* Inject the logger on StepupDecision #1254
+
+**Bugfix**
+* Improve MDUI Logo usage #1264
+
+**Improvement**
+* Documentation regarding the `metadata:coin:stepup:forceauthn` feature was added. 
+* Specify data types of roles columns #1262
+
+**Maintenance**
+* Test integration Github Action utilizes base container
+* Test integration runs against PHP 7.2 and PHP 8.2 (removed PHP 5.6 test runs) 
+
+## 6.11.0
+**Feature**
+* Allow to set EB's metadata XML Organization fields via translation (overrides).
+* Refuse to process incoming metadata push with 0 connections in it.
+* Show an Unknown SP error page also when invoking the unsolicited endpoint with an unknown entity ID.
+* Update regular expression for URN validation.
+
+**Change**
+* Migrate storage of MDUI metadata elements to new value objects.
+
+**Bugfix**
+* Avoid generating PHP notices when calling metadata API for IdP without SLO endpoints.
+* Update log message for session lost to not mention irrelevant 'unsolicited'.
 
 ## 6.10.0
 **Feature**

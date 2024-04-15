@@ -29,6 +29,7 @@ return $overrides + [
     'account_noun' => 'conta da organização',
 
     // Email
+    // %supportUrl% can be used as a placeholder for other translations
     'openconext_support_url' => 'https://example.org',
     'openconext_terms_of_use_url' => 'https://example.org',
     'name_id_support_url' => 'https://example.org',
@@ -83,21 +84,22 @@ HTML
     'cookie_removal_header'     => 'Remover cookies',
     'cookie_remove_button'      => 'Remover',
     'cookie_remove_all_button'  => 'Remover todos',
-    'cookie_removal_description' => '<p>Em baixo poderá encontrar uma visão geral dos seus cookies e a possibilidade de os remover individualmente ou todos de uma vez.</p>',
+    'cookie_removal_description' => 'Em baixo poderá encontrar uma visão geral dos seus cookies e a possibilidade de os remover individualmente ou todos de uma vez.',
     'cookie_removal_confirm'     => 'O seu cookie foi removido.',
     'cookies_removal_confirm'    => 'Os seus cookies foram removidos.',
 
     // Footer
     'service_by'            => 'Este serviço está ligado através da',
-    'serviceprovider_link'  => '<a href="https://openconext.org/" target="_blank">%suiteName%</a>',
-    'terms_of_service_link' => '<a href="#" target="_blank">Termos do Serviço</a>',
+    'serviceprovider_link_text'  => '%suiteName%',
+    'serviceprovider_link_target'  => 'https://openconext.org/',
+    'terms_of_service_link_text' => 'Termos do Serviço',
+    'terms_of_service_link_target' => '#',
 
     // Form
-    'request_access_instructions' => '<h2>Infelizmente, você não tem acesso ao serviço que seleccionou.
-                                   O que pode fazer?</h2>
-                                <p>Se pretende ter acesso a este serviço, preencha o formulário em baixo.
+    'request_access_instructions_head' => 'Infelizmente, você não tem acesso ao serviço que seleccionou. O que pode fazer?',
+    'request_access_instructions_text' => 'Se pretende ter acesso a este serviço, preencha o formulário em baixo.
                                    Em seguida, nós iremos encaminhar o seu pedido à pessoa responsável pela
-                                   gestão dos portfolios de serviço da sua %organisationNoun%.</p>',
+                                   gestão dos portfolios de serviço da sua %organisationNoun%.',
     'name'                  => 'Nome',
     'name_error'            => 'Insira o seu nome',
     'email'                 => 'E-mail',
@@ -112,7 +114,7 @@ HTML
     'required'              => 'Obrigatório',
 
     'send_confirm'          => 'O seu pedido foi enviado',
-    'send_confirm_desc'     => '<p>A sua solicitação foi encaminha para a sua %organisationNoun%. As decisões para a disponibilidade deste serviço serão tomadas pela equipa de IT da sua %organisationNoun%.</p>',
+    'send_confirm_desc'     => 'A sua solicitação foi encaminha para a sua %organisationNoun%. As decisões para a disponibilidade deste serviço serão tomadas pela equipa de IT da sua %organisationNoun%.',
 
     // Consent page
     'consent_attributes_screenreader'         => 'about %orgName%',
@@ -140,7 +142,7 @@ HTML
     'slidein_read_more' => 'Leia mais',
 
     // Error screens
-    'error_feedback_info_intro' => '<span class="heading@small">Does this error message recur?</span> Use the resources below to get help. When contacting the help desk, please include the following codes:',
+    'error_feedback_info_intro' => 'Does this error message recur? Use the resources below to get help. When contacting the help desk, please include the following codes:',
     'error_wiki-href' => 'https://nl.wikipedia.org/wiki/SURFnet',
     'error_wiki-link-text' => '%suiteName% Wiki',
     'error_wiki-link-text-short' => 'Wiki',
@@ -154,19 +156,19 @@ HTML
     'error_404_desc'                    => 'Esta página não foi encontrada.',
     'error_405'                         => 'Método HTTP não permitido',
     'error_405_desc'                    => 'O método HTTP "%requestMethod%" não é permitido para o endereço "%uri%". Os métodos suportados são: %allowedMethods%.',
-    'error_help_desc'               => '<p></p>',
+    'error_help_desc'               => '',
     'error_no_idps'                 => 'Erro - Não foi encontrado nenhum Fornecedor de Identidade',
     'error_no_idps_desc'            => 'O %spName% a que pretende ligar-se não está acessível através da %organisationNounPlural%.',
-    'error_no_idps_desc_no_sp_name'            => 'O serviço (&lsquo;Service Provider&rsquo;) a que pretende ligar-se não está acessível através da %organisationNounPlural%.',
+    'error_no_idps_desc_no_sp_name'            => 'O serviço ("Service Provider") a que pretende ligar-se não está acessível através da %organisationNounPlural%.',
     'error_session_lost'            => 'Erro - a sua sessão foi perdida',
     'error_session_lost_desc'       => '<p>Esta ação requer uma sessão ativa, no entanto, não conseguimos encontrar a sessão. Está a aguardar há muito tempo? Feche o browser e tente novamente, ou tente um browser diferente.</p>',
     'error_session_not_started'            => 'Erro - a sua sessão não foi encontrada',
     'error_session_not_started_desc'       => '<p>Esta ação requer uma sessão ativa, no entanto, não recebemos nenhum cookie de sessão. O browser deve aceitar cookies. Não utilize endereços do marcador ou link. Feche o browser e tente novamente, ou tente um browser diferente.</p>',
     'error_authorization_policy_violation'            => 'Erro - Sem acesso',
-    'error_authorization_policy_violation_desc'       => 'Você autenticu-se com sucesso na %idpName%, mas infelizmente você não pode utilizar %spName% (o &lsquo;Fornecedor de Serviço&rsquo;) porque não tem acesso. A %idpName% limita o acesso a %spName% com uma <i>política de autorização</i>. Entre em contacto com o suporte da %idpName% se acha que deve ser-lhe concedido acesso ao serviço.',
-    'error_authorization_policy_violation_desc_no_idp_name'       => 'Você autenticu-se com sucesso na sua %organisationNoun%, mas infelizmente você não pode utilizar %spName% (o &lsquo;Fornecedor de Serviço&rsquo;) porque não tem acesso. A sua %organisationNoun% limita o acesso a %spName% com uma <i>política de autorização</i>. Entre em contacto com o suporte da sua %organisationNoun% se acha que deve ser-lhe concedido acesso ao serviço.',
-    'error_authorization_policy_violation_desc_no_sp_name'       => 'Você autenticu-se com sucesso na %idpName%, mas infelizmente você não pode utilizar este serviço (o &lsquo;Fornecedor de Serviço&rsquo;) porque não tem acesso. A %idpName% limita o acesso a este serviço com uma <i>política de autorização</i>. Entre em contacto com o suporte da %idpName% se acha que deve ser-lhe concedido acesso ao serviço.',
-    'error_authorization_policy_violation_desc_no_name'       => 'Você autenticu-se com sucesso na sua %organisationNoun%, mas infelizmente você não pode utilizar este serviço (o &lsquo;Fornecedor de Serviço&rsquo;) porque não tem acesso. A sua %organisationNoun% limita o acesso a este serviço com uma <i>política de autorização</i>. Entre em contacto com o suporte da sua %organisationNoun% se acha que deve ser-lhe concedido acesso ao serviço.',
+    'error_authorization_policy_violation_desc'       => 'Você autenticu-se com sucesso na %idpName%, mas infelizmente você não pode utilizar %spName% (o "Fornecedor de Serviço") porque não tem acesso. A %idpName% limita o acesso a %spName% com uma política de autorização. Entre em contacto com o suporte da %idpName% se acha que deve ser-lhe concedido acesso ao serviço.',
+    'error_authorization_policy_violation_desc_no_idp_name'       => 'Você autenticu-se com sucesso na sua %organisationNoun%, mas infelizmente você não pode utilizar %spName% (o "Fornecedor de Serviço") porque não tem acesso. A sua %organisationNoun% limita o acesso a %spName% com uma política de autorização. Entre em contacto com o suporte da sua %organisationNoun% se acha que deve ser-lhe concedido acesso ao serviço.',
+    'error_authorization_policy_violation_desc_no_sp_name'       => 'Você autenticu-se com sucesso na %idpName%, mas infelizmente você não pode utilizar este serviço (o "Fornecedor de Serviço") porque não tem acesso. A %idpName% limita o acesso a este serviço com uma política de autorização. Entre em contacto com o suporte da %idpName% se acha que deve ser-lhe concedido acesso ao serviço.',
+    'error_authorization_policy_violation_desc_no_name'       => 'Você autenticu-se com sucesso na sua %organisationNoun%, mas infelizmente você não pode utilizar este serviço (o "Fornecedor de Serviço") porque não tem acesso. A sua %organisationNoun% limita o acesso a este serviço com uma política de autorização. Entre em contacto com o suporte da sua %organisationNoun% se acha que deve ser-lhe concedido acesso ao serviço.',
     'error_authorization_policy_violation_info'       => 'Mensagem da %idpName%: ',
     'error_authorization_policy_violation_info_no_idp_name'       => 'Mensagem da sua %organisationNoun%: ',
     'error_no_message'              => 'Erro - Não foi recebido nenhuma mensagem',
@@ -180,8 +182,8 @@ HTML
     'error_unknown_keyid_desc' => 'The requested key-ID is not known to %suiteName%. Perhaps the service provider is using outdated metadata or has a configuration error.',
     'error_unknown_preselected_idp' => 'Erro - Não há ligação entre %organisationNoun% e o serviço',
     'error_unknown_preselected_idp_no_sp_name' => 'Erro - Não há ligação entre %organisationNoun% e o serviço',
-    'error_unknown_preselected_idp_desc' => 'A %organisationNoun% que pretende utilizar para se autenticar e aceder ao serviço, não tem activado o acesso a este serviço. Isto significa que não pode aceder a este serviço através da %suiteName%. Entre em contacto com com o suporte da sua %organisationNoun% para solicitar o acesso a este serviço. Declare que serviço se trata (o &lsquo;Fornecedor de Serviço&rsquo;) e porque necessita do acesso.',
-    'error_unknown_preselected_idp_desc_no_sp_name' => 'A %organisationNoun% que pretende utilizar para se autenticar e aceder ao serviço, não tem activado o acesso a este serviço. Isto significa que não pode aceder a este serviço através da %suiteName%. Entre em contacto com com o suporte da sua %organisationNoun% para solicitar o acesso a este serviço. Declare que serviço se trata (o &lsquo;Fornecedor de Serviço&rsquo;) e porque necessita do acesso.',
+    'error_unknown_preselected_idp_desc' => 'A %organisationNoun% que pretende utilizar para se autenticar e aceder ao serviço, não tem activado o acesso a este serviço. Isto significa que não pode aceder a este serviço através da %suiteName%. Entre em contacto com com o suporte da sua %organisationNoun% para solicitar o acesso a este serviço. Declare que serviço se trata (o "Fornecedor de Serviço") e porque necessita do acesso.',
+    'error_unknown_preselected_idp_desc_no_sp_name' => 'A %organisationNoun% que pretende utilizar para se autenticar e aceder ao serviço, não tem activado o acesso a este serviço. Isto significa que não pode aceder a este serviço através da %suiteName%. Entre em contacto com com o suporte da sua %organisationNoun% para solicitar o acesso a este serviço. Declare que serviço se trata (o "Fornecedor de Serviço") e porque necessita do acesso.',
     'error_unknown_service_provider'          => 'Erro - Serviço desconhecido',
     'error_unknown_service_provider_desc'     => 'O serviço a que pretende autenticar-se é desconhecido para a %suiteName%. Possivelmente a sua %organisationNoun% nunca permitiu o acesso a este serviço. Entre em contacto com o suporte da sua %organisationNoun% e fornecer-lhes as seguintes informações:',
 
@@ -194,58 +196,10 @@ HTML
     'error_generic'                     => 'Erro - Ocorreu um erro',
     'error_generic_desc'                => 'A sua autenticação falhou e não sabemos exactamente porquê. Tente de novo e no caso de voltar a não funcionar, entre em contacto com o suporte da %idpName% para pedir ajuda.',
     'error_missing_required_fields'     => 'Erro - Campo necessário em falta',
-    'error_missing_required_fields_desc'=> '<p>
-Não pode usar esta aplicação porque a %idpName% não está a fornecer a informação necessária.
-    </p>
-    <p>
-        Entre em contacto com a %idpName% com a informação indicada em baixo.
-    </p>
-    <p>
-        A autenticação falhou porque o Fornecedor de Identidade da %idpName% não forneceu %suiteName% com um ou mais dos seguintes atributos obrigatórios:
-        <ul>
-            <li>UID</li>
-            <li>schacHomeOrganization</li>
-        </ul>
-    </p>',
-        'error_missing_required_fields_desc_no_idp_name'=> '<p>
-Não pode usar esta aplicação porque a sua %organisationNoun% não está a fornecer a informação necessária.
-    </p>
-    <p>
-        Entre em contacto com a sua %organisationNoun% com a informação indicada em baixo.
-    </p>
-    <p>
-        A autenticação falhou porque o Fornecedor de Identidade da sua %organisationNoun% não forneceu %suiteName% com um ou mais dos seguintes atributos obrigatórios:
-        <ul>
-            <li>UID</li>
-            <li>schacHomeOrganization</li>
-        </ul>
-    </p>',
-        'error_missing_required_fields_desc_no_sp_name'=> '<p>
-Não pode usar esta aplicação porque a %idpName% não está a fornecer a informação necessária.
-    </p>
-    <p>
-        Entre em contacto com a %idpName% com a informação indicada em baixo.
-    </p>
-    <p>
-        A autenticação falhou porque o Fornecedor de Identidade da %idpName% não forneceu %suiteName% com um ou mais dos seguintes atributos obrigatórios:
-        <ul>
-            <li>UID</li>
-            <li>schacHomeOrganization</li>
-        </ul>
-    </p>',
-    'error_missing_required_fields_desc_no_name'=> '<p>
-Não pode usar esta aplicação porque a sua %organisationNoun% não está a fornecer a informação necessária.
-</p>
-<p>
-    Entre em contacto com a sua %organisationNoun% com a informação indicada em baixo.
-</p>
-<p>
-    A autenticação falhou porque o Fornecedor de Identidade da sua %organisationNoun% não forneceu %suiteName% com um ou mais dos seguintes atributos obrigatórios:
-    <ul>
-        <li>UID</li>
-        <li>schacHomeOrganization</li>
-    </ul>
-</p>',
+    'error_missing_required_fields_desc'=> 'Não pode usar esta aplicação porque a %idpName% não está a fornecer a informação necessária. Entre em contacto com a %idpName% com a informação indicada em baixo. A autenticação falhou porque o Fornecedor de Identidade da %idpName% não forneceu %suiteName% com um ou mais dos seguintes atributos obrigatórios:',
+    'error_missing_required_fields_desc_no_idp_name'=> 'Não pode usar esta aplicação porque a sua %organisationNoun% não está a fornecer a informação necessária. Entre em contacto com a sua %organisationNoun% com a informação indicada em baixo. A autenticação falhou porque o Fornecedor de Identidade da sua %organisationNoun% não forneceu %suiteName% com um ou mais dos seguintes atributos obrigatórios:',
+    'error_missing_required_fields_desc_no_sp_name'=> 'Não pode usar esta aplicação porque a %idpName% não está a fornecer a informação necessária. Entre em contacto com a %idpName% com a informação indicada em baixo. A autenticação falhou porque o Fornecedor de Identidade da %idpName% não forneceu %suiteName% com um ou mais dos seguintes atributos obrigatórios:',
+    'error_missing_required_fields_desc_no_name'=> 'Não pode usar esta aplicação porque a sua %organisationNoun% não está a fornecer a informação necessária. Entre em contacto com a sua %organisationNoun% com a informação indicada em baixo. A autenticação falhou porque o Fornecedor de Identidade da sua %organisationNoun% não forneceu %suiteName% com um ou mais dos seguintes atributos obrigatórios:',
     'error_invalid_attribute_value' => 'Valor do atributo não permitido',
     'error_invalid_attribute_value_desc' => 'A %idpName% utilizou um valor para o atributo %attributeName% ("%attributeValue%") o que não é permitido para esta %organisationNoun%. Desta forma, não pode autenticar-se. Apenas a %idpName% pode resolver esta situação. Entre em contacto com o suporte deste serviço da %idpName%.',
     'error_invalid_attribute_value_desc_no_idp_name' => 'A sua %organisationNoun% utilizou um valor para o atributo %attributeName% ("%attributeValue%") o que não é permitido para esta %organisationNoun%. Desta forma, não pode autenticar-se. Apenas a sua %organisationNoun% pode resolver esta situação. Entre em contacto com o suporte deste serviço da sua %organisationNoun%.',
@@ -298,7 +252,9 @@ A sua %organisationNoun% negou-lhe acesso a este serviço. Terá de entrar em co
     'error_stepup_callout_unknown_title' => 'Erro - falha por autenticação forte desconhecida',
     'error_stepup_callout_unknown_desc' => 'O login com autenticação forte falhou e não sabemos exatamente qual o motivo. Tente aceder de novo ao serviço e efetuar uma nova autenticação. Se voltar a não funcionar, entre em contato com o suporte técnico da sua %organisationNoun%.',
     'error_stepup_callout_unmet_loa_title' => 'Erro - não foi encontrado nenhum token adequado',
-    'error_stepup_callout_unmet_loa_desc' => 'Para continuar neste serviço, é necessário que o token registado tenho um determinado nível de confiança. Atualmente, você não tem um token registado, ou o nível de confiança do seu token é muito baixo. Veja o endereço abaixo para mais informações sobre o processo de registo.<br/><br/><a target="_blank" href="https://support.surfconext.nl/stepup-noauthncontext">Leia mais sobre o processo de registro.</a>',
+    'error_stepup_callout_unmet_loa_desc' => 'Para continuar neste serviço, é necessário que o token registado tenho um determinado nível de confiança. Atualmente, você não tem um token registado, ou o nível de confiança do seu token é muito baixo. Veja o endereço abaixo para mais informações sobre o processo de registo.',
+    'error_stepup_callout_unmet_loa_link_text' => 'Leia mais sobre o processo de registro.',
+    'error_stepup_callout_unmet_loa_link_target' => 'https://support.surfconext.nl/stepup-noauthncontext',
     'error_stepup_callout_user_cancelled_title' => 'Erro - Carregamento cancelado',
     'error_stepup_callout_user_cancelled_desc' => 'Você cancelou o processo de autenticação. Volte ao serviço se você pretender tentar de novo.',
     'error_metadata_entity_id_not_found' => 'Metadata can not be generated',
@@ -320,6 +276,8 @@ A sua %organisationNoun% negou-lhe acesso a este serviço. Terá de entrar em co
     'logout' => 'logout',
     'logout_description' => 'Esta aplicação utiliza autenticação centralizada, que permite uma única autenticação para várias aplicações. Para garantir que o seu logout está 100% assegurado, deve fe3char o seu browser completamente.',
     'logout_information_link' => '',
+    'logout_information_link_text' => '',
+    'logout_information_link_target' => '',
 
     // Error page wiki link in footer, keep empty to hide block in footer
     'error_feedback_wiki_links_feedback_unknown_error' => 'https://support.surfconext.nl/help-error-error-en',
@@ -380,4 +338,9 @@ A sua %organisationNoun% negou-lhe acesso a este serviço. Terá de entrar em co
     'error_feedback_idp_contact_label_small_authentication_feedback_stepup_callout_unmet_loa' => '',
     'error_feedback_idp_contact_label_small_authentication_feedback_stepup_callout_unknown' => '',
     'error_feedback_idp_contact_label_small_authentication_feedback_metadata_entity_not_found' => '',
+
+    // Metadata
+    'metadata_organization_name' => '%suiteName%',
+    'metadata_organization_displayname' => '%suiteName%',
+    'metadata_organization_url' => '%supportUrl%',
 ];

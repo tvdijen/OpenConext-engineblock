@@ -21,24 +21,26 @@ use EngineBlock_X509_CertificateFactory;
 use OpenConext\EngineBlock\Metadata\Entity\IdentityProvider;
 use OpenConext\EngineBlock\Metadata\Entity\ServiceProvider;
 use OpenConext\EngineBlock\Metadata\IndexedService;
+use OpenConext\EngineBlock\Metadata\Mdui;
 use OpenConext\EngineBlock\Metadata\Service;
 use RobRichards\XMLSecLibs\XMLSecurityKey;
 use SAML2\Constants;
 
 class StepupEntityFactory
 {
-
     /**
      * @throws \EngineBlock_Exception
      */
     public static function idpFrom(StepupEndpoint $stepupEndpoint, ?string $acsLocation) : IdentityProvider
     {
+        $certificates = $singleSignOnServices = [];
         $publicKeyFactory = new EngineBlock_X509_CertificateFactory();
         $certificates[] = $publicKeyFactory->fromFile($stepupEndpoint->getKeyFile());
         $singleSignOnServices[] = new Service($stepupEndpoint->getSsoLocation(), Constants::BINDING_HTTP_REDIRECT);
 
         $entity = new IdentityProvider(
             $stepupEndpoint->getEntityId(),
+            Mdui::emptyMdui(),
             null,
             null,
             null,
@@ -88,6 +90,7 @@ class StepupEntityFactory
      */
     public static function spFrom(StepupEndpoint $stepupEndpoint, ?string $acsLocation) : ServiceProvider
     {
+        $certificates = $assertionConsumerServices = [];
         $publicKeyFactory = new EngineBlock_X509_CertificateFactory();
         $certificates[] = $publicKeyFactory->fromFile($stepupEndpoint->getKeyFile());
         $assertionConsumerServices[] = new IndexedService(

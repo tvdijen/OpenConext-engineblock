@@ -7,22 +7,22 @@ Take note that the development of a theme happens in the engineblock context.  M
 
 ### Tools for theme-development
 
-For development of a theme you need to have [Node.JS][nodejs] installed.
+For development of a theme you need to have [Node.JS][nodejs] and Yarn installed.
 All other tools are installed through Node.JS with the following command:
 
 ```
-(cd theme && npm install && npm run build)
+(cd theme && yarn && yarn build)
 ```
 
 We use the following tools:
 - [SASS][sass] as a CSS extension language.  We use the .scss extension, because if you don't know sass it's just like writing regular css (it's also become industry standard).  After compilation, we use [PostCSS][postcss] to ensure vendor prefixes are added for all suported browsers.
 - [Twig][twig] as the templating system.  It's well documented, easy to learn and very powerful.  If you don't know it yet you can start writing plain html and ease into it.
 - [Vanilla JS][vanilla.js] as our JS solution of choice.  It's lightning fast, easily blowing any rival framework out of the water.  It also allows anyone to jump in.  We compile it using [Babel][babel] to ensure we can use the latest&greatest features of choice.
-- [Cypress][cypress] for integration, end-to-end testing, visual-regression testing, accessibility-testing and html-validation.  We use plugins for the last two.
+- [Cypress][cypress] for integration, end-to-end testing, visual-regression testing, accessibility-testing and html-validation.  We use plugins for the last two. The tests are situated in the `tests` folder outside the `theme` folder.
 
 To speed up development on changes to the theme run the following command for live updates on the selected theme;
 ```
-npm run watch
+yarn watch
 ```
 This will detect changes to the javascript and stylesheet in the select theme and update the build accordingly. Do note that this script only watches
 the selected theme and not the base.
@@ -64,7 +64,6 @@ For instructions on how to use it: see the file itself.
             - index.html.twig: modules > Authentication > View > Index
             - error.html.twig: modules > Default > View > Error
         - translations: translations specific to the theme.
-    - cypress: all tests.  The main thing to know here is that the tests reside in the **integration** subfolder.  Each theme has one subfolder with its own tests.  Aside from that, there is a "shared" folder with the tests which each theme should run.
     - openconext: the theme formerly known as material.  This used to be the official theme.
     - scripts: node.js scripts to make our life easier.  These are called via the yarn commands.
     - skeune: the skeune theme
@@ -109,9 +108,9 @@ Your theme **must** have the following structure (or the build will fail):
 
 For your convenience, you can simply use the following command to create a scaffold for your new theme:
 
-`npm run create-theme <theme-name>`
+`yarn create-theme <theme-name>`
 
-For example: to create a scaffold for a new theme called "surfconext" use the command `npm run create-theme surfconext`
+For example: to create a scaffold for a new theme called "surfconext" use the command `yarn create-theme surfconext`
 
 #### Custom CSS
 
@@ -169,7 +168,7 @@ Below you'll find a list of the "entry points" for each page with corresponding 
 
 - wayf: `templates > modules > authentication > view > proxy > wayf.html.twig `.  You can use `https://engine.vm.openconext.org/functional-testing/wayf` to develop the page.
 - error: `templates > modules > default > view > error > error.html.twig`.  You can use `https://engine.vm.openconext.org/feedback/unknown-error` to develop the page.
-There are a lot of error pages.  To test all different kinds, you can use the urls on this page: `https://github.com/OpenConext/OpenConext-engineblock/blob/master/theme/cypress/visual-regression/ErrorPage.spec.js#L72`
+There are a lot of error pages.  To test all different kinds, you can use the urls on this page: `https://github.com/OpenConext/OpenConext-engineblock/blob/master/tests/e2e/cypress/visual-regression/ErrorPage.spec.js#L72`
 
 - redirect page: `templates > modules > authentication > view > proxy > redirect.html.twig`.
 - spinner page: `templates > modules > authentication > view > proxy > form.html.twig`.  To test it disable the onload handler on the body-tag and go to your profile (or load the page without JS).

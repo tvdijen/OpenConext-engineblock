@@ -60,7 +60,7 @@ class DeprovisionServiceTest extends TestCase
      */
     private $user;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->consentRepository = m::mock(ConsentRepository::class);
         $this->userDirectory = m::mock(UserDirectory::class);
@@ -158,7 +158,7 @@ class DeprovisionServiceTest extends TestCase
             new CollabPersonId('urn:collab:person:test')
         );
 
-        $this->assertInternalType('array', $result);
+        $this->assertIsArray($result);
         $this->assertEmpty($result);
     }
 
@@ -199,10 +199,10 @@ class DeprovisionServiceTest extends TestCase
 
         $this->assertEquals($this->user, $result[0]['value']);
 
-        $this->assertInternalType('array', $result[1]['value']);
+        $this->assertIsArray($result[1]['value']);
         $this->assertEmpty($result[1]['value']);
 
-        $this->assertInternalType('array', $result[2]['value']);
+        $this->assertIsArray($result[2]['value']);
         $this->assertEmpty($result[2]['value']);
     }
 

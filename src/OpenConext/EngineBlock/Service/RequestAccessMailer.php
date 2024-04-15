@@ -91,10 +91,12 @@ TPL;
             $comment
         );
 
+        // We use the destination email address also as a From since we do
+        // not have a better generic sender address available currently.
         $message = new Swift_Message();
         $message
             ->setSubject($subject)
-            ->setFrom($email, $name)
+            ->setFrom($this->requestAccessEmailAddress)
             ->setTo($this->requestAccessEmailAddress)
             ->setBody($body, 'text/plain');
 
@@ -127,7 +129,7 @@ TPL;
         $message = new Swift_Message();
         $message
             ->setSubject($subject)
-            ->setFrom($email, $name)
+            ->setFrom($this->requestAccessEmailAddress)
             ->setTo($this->requestAccessEmailAddress)
             ->setBody($body, 'text/plain');
 

@@ -22,6 +22,7 @@ use OpenConext\EngineBlock\Metadata\Coins;
 use OpenConext\EngineBlock\Metadata\ContactPerson;
 use OpenConext\EngineBlock\Metadata\IndexedService;
 use OpenConext\EngineBlock\Metadata\Logo;
+use OpenConext\EngineBlock\Metadata\Mdui;
 use OpenConext\EngineBlock\Metadata\Organization;
 use OpenConext\EngineBlock\Metadata\RequestedAttribute;
 use OpenConext\EngineBlock\Metadata\Service;
@@ -46,17 +47,9 @@ interface ServiceProviderEntityInterface
      */
     public function getName($locale): string;
 
-    /**
-     * @param $locale
-     * @return string
-     */
-    public function getDescription($locale): string;
+    public function getDescription(string $locale): string;
 
-    /**
-     * @param $locale
-     * @return string
-     */
-    public function getDisplayName($locale): string;
+    public function getDisplayName(string $locale): string;
 
     /**
      * @return Logo|null
@@ -167,4 +160,6 @@ interface ServiceProviderEntityInterface
      * @return bool
      */
     public function isAttributeAggregationRequired(): bool;
+
+    public function getMdui(): Mdui;
 }

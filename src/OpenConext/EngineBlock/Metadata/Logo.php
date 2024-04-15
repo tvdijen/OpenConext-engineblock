@@ -18,11 +18,14 @@
 
 namespace OpenConext\EngineBlock\Metadata;
 
+use JsonSerializable;
+use OpenConext\EngineBlock\Exception\MduiRuntimeException;
+
 /**
  * A SAML2 metadata logo.
  * @package OpenConext\EngineBlock\Metadata
  */
-class Logo
+class Logo implements MultilingualElement, JsonSerializable
 {
     public $height = null;
     public $width = null;
@@ -34,5 +37,50 @@ class Logo
     public function __construct($url)
     {
         $this->url = $url;
+    }
+
+    public static function fromJson(array $multiLingualElement): MultilingualElement
+    {
+        if (!array_key_exists('url', $multiLingualElement)) {
+            throw new MduiRuntimeException(
+                'Incomplete MDUI Logo data. The URL is missing while serializing the data from JSON'
+            );
+        }
+        $element = new self($multiLingualElement['url']);
+        if (array_key_exists('height', $multiLingualElement)) {
+            $element->height = $multiLingualElement['height'];
+        }
+        if (array_key_exists('width', $multiLingualElement)) {
+            $element->width = $multiLingualElement['width'];
+        }
+        return $element;
+    }
+
+    public function getName(): string
+    {
+        return 'Logo';
+    }
+
+    public function translate(string $language): MultilingualValue
+    {
+        throw new MduiRuntimeException('We do not implement the Mdui Logo in a multilingual fashion');
+    }
+
+    public function jsonSerialize()
+    {
+        return [
+            'name' => $this->getName(),
+            'url' => $this->url,
+            'width' => $this->width,
+            'height' => $this->height,
+        ];
+    }
+
+    /**
+     * Always consider the Logo to be of the primary language
+     */
+    public function getConfiguredLanguages(): array
+    {
+        return [self::PRIMARY_LANGUAGE];
     }
 }

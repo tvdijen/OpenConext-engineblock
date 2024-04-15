@@ -375,6 +375,7 @@ class EngineBlock_Corto_Module_Service_SingleSignOn implements EngineBlock_Corto
         $issuer = new Issuer();
         $issuer->setValue($this->_server->getUrl('spMetadataService'));
         $sspRequest->setIssuer($issuer);
+        $sspRequest->setForceAuthn(true);
 
         $request = new EngineBlock_Saml2_AuthnRequestAnnotationDecorator($sspRequest);
         $request->setDebug();
@@ -479,7 +480,7 @@ class EngineBlock_Corto_Module_Service_SingleSignOn implements EngineBlock_Corto
                 'serviceProvider' => $serviceProvider,
                 'idpList' => $idpList,
                 'cookies' => $cookies,
-                'beforeScriptHtml' => '<div id="request-access-scroller"><div id="request-access-container"><div id="request-access"></div></div></div>',
+                'showRequestAccessContainer' => true,
             ]
         );
         $this->_server->sendOutput($output);
@@ -514,7 +515,7 @@ class EngineBlock_Corto_Module_Service_SingleSignOn implements EngineBlock_Corto
 
             $wayfIdp = array(
                 'Name'   => $name,
-                'Logo'      => $identityProvider->logo ? $identityProvider->logo->url : '/images/placeholder.png',
+                'Logo'      => $identityProvider->getMdui()->hasLogo() ? $identityProvider->getMdui()->getLogo()->url : '/images/placeholder.png',
                 'Keywords'  => $this->getKeywords($identityProvider),
                 'Access'    => $isAccessible ? '1' : '0',
                 'ID'        => md5($identityProvider->entityId),
@@ -586,8 +587,8 @@ class EngineBlock_Corto_Module_Service_SingleSignOn implements EngineBlock_Corto
         IdentityProvider $identityProvider,
         AdditionalInfo $additionalLogInfo
     ) {
-        if ($identityProvider->displayNameNl) {
-            return $identityProvider->displayNameNl;
+        if ($identityProvider->getMdui()->hasDisplayName('nl')) {
+            return $identityProvider->getMdui()->getDisplayName('nl');
         }
 
         if ($identityProvider->nameNl) {
@@ -606,8 +607,8 @@ class EngineBlock_Corto_Module_Service_SingleSignOn implements EngineBlock_Corto
         IdentityProvider $identityProvider,
         AdditionalInfo $additionalInfo
     ) {
-        if ($identityProvider->displayNameEn) {
-            return $identityProvider->displayNameEn;
+        if ($identityProvider->getMdui()->hasDisplayName('en')) {
+            return $identityProvider->getMdui()->getDisplayName('en');
         }
 
         if ($identityProvider->nameEn) {
@@ -626,8 +627,8 @@ class EngineBlock_Corto_Module_Service_SingleSignOn implements EngineBlock_Corto
         IdentityProvider $identityProvider,
         AdditionalInfo $additionalInfo
     ) {
-        if ($identityProvider->displayNamePt) {
-            return $identityProvider->displayNamePt;
+        if ($identityProvider->getMdui()->hasDisplayName('pt')) {
+            return $identityProvider->getMdui()->getDisplayName('pt');
         }
 
         if ($identityProvider->namePt) {
@@ -644,16 +645,16 @@ class EngineBlock_Corto_Module_Service_SingleSignOn implements EngineBlock_Corto
 
     private function getKeywords(IdentityProvider $identityProvider)
     {
-        if ($identityProvider->keywordsEn) {
-            return explode(' ', $identityProvider->keywordsEn);
+        if ($identityProvider->getMdui()->hasKeywords('en')) {
+            return explode(' ', $identityProvider->getMdui()->getKeywords('en'));
         }
 
-        if ($identityProvider->keywordsNl) {
-            return explode(' ', $identityProvider->keywordsNl);
+        if ($identityProvider->getMdui()->hasKeywords('nl')) {
+            return explode(' ', $identityProvider->getMdui()->getKeywords('nl'));
         }
 
-        if ($identityProvider->keywordsPt) {
-            return explode(' ', $identityProvider->keywordsPt);
+        if ($identityProvider->getMdui()->hasKeywords('pt')) {
+            return explode(' ', $identityProvider->getMdui()->getKeywords('pt'));
         }
 
         return 'Undefined';

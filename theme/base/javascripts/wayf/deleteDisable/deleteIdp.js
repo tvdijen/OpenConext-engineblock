@@ -7,7 +7,7 @@ import {
   selectedIdpsLiSelector,
   toggleButtonSelector,
 } from '../../selectors';
-import * as Cookies from 'js-cookie';
+import Cookies from 'js-cookie';
 import {getData} from '../../utility/getData';
 
 /**
@@ -17,12 +17,16 @@ import {getData} from '../../utility/getData';
  */
 export const deleteIdp = (element) => {
   const cookieName = JSON.parse(document.getElementById(configurationId).innerHTML).previousSelectionCookieName;
+  const cookieValue = Cookies.get(cookieName);
+  const cookie = JSON.parse(cookieValue);
+
   const idp = element.closest(idpSelector);
   const id = getData(idp, 'entityid');
   const parent = idp.parentElement;
   const title = getData(parent, 'title');
   const parentIndex = parseInt(getData(parent, 'index'));
-  const cookie = JSON.parse(Cookies.get(cookieName));
+
+
 
   cookie.forEach((idp, index) => {
     if (idp.idp === id) {

@@ -29,6 +29,7 @@ return $overrides + [
     'account_noun' => 'organisatieaccount',
 
     // Email
+    // %supportUrl% can be used as a placeholder for other translations
     'openconext_support_url' => 'https://example.org',
     'openconext_terms_of_use_url' => 'https://example.org',
     'name_id_support_url' => 'https://example.org',
@@ -83,19 +84,21 @@ HTML
     'cookie_removal_header'     => 'Cookies verwijderen',
     'cookie_remove_button'      => 'Verwijderen',
     'cookie_remove_all_button'  => 'Alles verwijderen',
-    'cookie_removal_description' => '<p>In onderstaande overzicht vindt u uw opgeslagen cookies en een de mogelijk om deze individueel of allemaal tegelijk te verwijderen.</p>',
+    'cookie_removal_description' => 'In onderstaande overzicht vindt u uw opgeslagen cookies en een de mogelijk om deze individueel of allemaal tegelijk te verwijderen.',
     'cookie_removal_confirm'     => 'Uw cookie is verwijderd.',
     'cookies_removal_confirm'    => 'Uw cookies zijn verwijderd.',
 
     // Footer
     'service_by'            => 'Deze dienst is verbonden via',
-    'serviceprovider_link'  => '%suiteName%',
-    'terms_of_service_link' => '<a href="#" target="_blank">Gebruiksvoorwaarden</a>',
+    'serviceprovider_link_text'  => '%suiteName%',
+    'serviceprovider_link_target'  => 'https://openconext.org/',
+    'terms_of_service_link_text' => 'Gebruiksvoorwaarden',
+    'terms_of_service_link_target' => '#',
 
     // Request Access Form
-    'request_access_instructions' => '<h2>Helaas, je hebt geen toegang tot de dienst die je zoekt. Wat nu?</h2>
-                                <p>Wil je toch graag toegang tot deze dienst, vul dan het onderstaande formulier in.
-                                   Wij sturen je verzoek door naar de juiste persoon binnen jouw %organisationNoun%.</p>',
+    'request_access_instructions_head' => 'Helaas, je hebt geen toegang tot de dienst die je zoekt. Wat nu?',
+    'request_access_instructions_text' => 'Wil je toch graag toegang tot deze dienst, vul dan het onderstaande formulier in.
+                                   Wij sturen je verzoek door naar de juiste persoon binnen jouw %organisationNoun%.',
     'name'                  => 'Naam',
     'name_error'            => 'Vul je naam in',
     'email'                 => 'E-mail',
@@ -109,7 +112,7 @@ HTML
     'close'                 => 'Sluiten',
     'required'              => 'Verplicht',
     'send_confirm'          => 'Je verzoek is verzonden',
-    'send_confirm_desc'     => '<p>Je verzoek is doorgestuurd naar de juiste persoon binnen jouw %organisationNoun%. Het is aan deze persoon om actie te ondernemen op basis van jouw verzoek. Het kan zijn dat er nog afspraken gemaakt moeten worden tussen jouw %organisationNoun% en de dienstaanbieder.</p>',
+    'send_confirm_desc'     => 'Je verzoek is doorgestuurd naar de juiste persoon binnen jouw %organisationNoun%. Het is aan deze persoon om actie te ondernemen op basis van jouw verzoek. Het kan zijn dat er nog afspraken gemaakt moeten worden tussen jouw %organisationNoun% en de dienstaanbieder.',
 
     // Consent page
     'consent_attributes_screenreader'         => 'over %orgName%',
@@ -139,7 +142,7 @@ HTML
     'slidein_read_more' => 'Lees meer',
 
     // Error screens
-    'error_feedback_info_intro' => '<span class="heading@small">Blijft deze foutmelding terugkomen?</span> Maak dan gebruik van de hieronder vermelde hulpopties. Vermeld bij contact met de helpdesk de onderstaande codes:',
+    'error_feedback_info_intro' => 'Blijft deze foutmelding terugkomen? Maak dan gebruik van de hieronder vermelde hulpopties. Vermeld bij contact met de helpdesk de onderstaande codes:',
     'error_wiki-href' => 'https://nl.wikipedia.org/wiki/SURFnet',
     'error_wiki-link-text' => '%suiteName% Wiki',
     'error_wiki-link-text-short' => 'Wiki',
@@ -152,8 +155,8 @@ HTML
     'error_404'                         => '404 - Pagina niet gevonden',
     'error_404_desc'                    => 'De pagina is niet gevonden.',
     'error_405'                         => 'HTTP methode is niet toegestaan',
-    'error_405_desc'                    => 'De HTTP-methode "%requestMethod%" is niet toegestaan ​​voor locatie "%uri%". Ondersteunde methodes zijn: %allowedMethods%.',
-    'error_help_desc'                   => '<p></p>',
+    'error_405_desc'                    => 'De HTTP-methode "%requestMethod%" is niet toegestaan voor locatie "%uri%". Ondersteunde methodes zijn: %allowedMethods%.',
+    'error_help_desc'                   => '',
     'error_no_idps'                     => 'Error - Geen %organisationNounPlural% gevonden',
     'error_no_idps_desc'                => 'Inloggen op %spName% via %suiteName% is onmogelijk. %spName% is niet gekoppeld met een %organisationNoun%.',
     'error_no_idps_desc_no_sp_name'                => 'Inloggen op de dienst via %suiteName% is onmogelijk. De dienst is niet gekoppeld met een %organisationNoun%.',
@@ -180,7 +183,7 @@ HTML
     'error_unknown_preselected_idp' => 'Fout - %spName% niet toegankelijk via %organisationNoun%',
     'error_unknown_preselected_idp_no_sp_name' => 'Fout - Dienst niet toegankelijk via %organisationNoun%',
     'error_unknown_preselected_idp_desc' => 'De %organisationNoun% waarmee je wilt inloggen heeft toegang tot %spName% niet geactiveerd. Dat betekent dat jij geen gebruik kunt maken van deze dienst via %suiteName%. Neem contact op met de helpdesk van jouw %organisationNoun% als je toegang wilt krijgen tot %spName%. Geef daarbij aan dat het om %spName% gaat en waarom je toegang wilt.',
-    'error_unknown_preselected_idp_desc_no_sp_name' => 'De %organisationNoun% waarmee je wilt inloggen heeft toegang tot deze dienst niet geactiveerd. Dat betekent dat jij geen gebruik kunt maken van deze dienst via %suiteName%. Neem contact op met de helpdesk van jouw %organisationNoun% als je toegang wilt krijgen tot deze dienst. Geef daarbij aan om welke dienst het gaat (de &lsquo;SP&rsquo;) en waarom je toegang wilt.',
+    'error_unknown_preselected_idp_desc_no_sp_name' => 'De %organisationNoun% waarmee je wilt inloggen heeft toegang tot deze dienst niet geactiveerd. Dat betekent dat jij geen gebruik kunt maken van deze dienst via %suiteName%. Neem contact op met de helpdesk van jouw %organisationNoun% als je toegang wilt krijgen tot deze dienst. Geef daarbij aan om welke dienst het gaat (de "SP") en waarom je toegang wilt.',
     'error_unknown_service_provider'                => 'Error - %spName% onbekend',
     'error_unknown_service_provider_no_sp_name'     => 'Error - Onbekende dienst',
     'error_unknown_service_provider_desc'     => '%spName% is onbekend bij %suiteName%. Wellicht heeft %idpName% toegang tot deze dienst niet geactiveerd. Wil je gebruik maken van %spName%, wend je dan tot de helpdesk van %idpName%.',
@@ -198,65 +201,15 @@ HTML
     'error_generic_desc_no_idp_name' => 'Inloggen is niet gelukt en we weten niet precies waarom. Probeer het eerst eens opnieuw door terug te gaan naar %spName% en opnieuw in te loggen. Lukt dit niet, neem dan contact op met de helpdesk van je %organisationNoun%.',
     'error_generic_desc_no_names' => 'Inloggen is niet gelukt en we weten niet precies waarom. Probeer het eerst eens opnieuw door terug te gaan naar de dienst en opnieuw in te loggen. Lukt dit niet, neem dan contact op met de helpdesk van je %organisationNoun%.',
     'error_missing_required_fields'     => 'Error - Verplichte velden ontbreken',
-    'error_missing_required_fields_desc'=> '<p>
-        %idpName% geeft niet de benodigde informatie vrij. Daarom kun je %spName% niet gebruiken.
-    </p>
-    <p>
-        Neem alstublieft contact op met de helpdesk van %idpName%. Geef hierbij de onderstaande informatie door.
-    </p>
-    <p>
-        Omdat %idpName% niet de juiste attributen aan %suiteName% doorgeeft, of in het onjuiste formaat, is het inloggen mislukt. De volgende attributen zijn vereist om succesvol in te loggen op het %suiteName% platform:
-        <ul>
-            <li>UID</li>
-            <li>schacHomeOrganization</li>
-        </ul>
-    </p>',
-    'error_missing_required_fields_desc_no_idp_name'=> '<p>
-        Jouw %organisationNoun% geeft niet de benodigde informatie vrij. Daarom kun je %spName% niet gebruiken.
-    </p>
-    <p>
-        Neem alstublieft contact op met de helpdesk van jouw %organisationNoun%. Geef hierbij de onderstaande informatie door.
-    </p>
-    <p>
-        Omdat je %organisationNoun% niet de juiste attributen aan %suiteName% doorgeeft is het inloggen mislukt. De volgende attributen zijn vereist om succesvol in te loggen op het %suiteName% platform:
-        <ul>
-            <li>UID</li>
-            <li>schacHomeOrganization</li>
-        </ul>
-    </p>',
-    'error_missing_required_fields_desc_no_sp_name'=> '<p>
-        %idpName% geeft niet de benodigde informatie vrij. Daarom kun je deze applicatie  niet gebruiken.
-    </p>
-    <p>
-        Neem alstublieft contact op met de helpdesk van %idpName%. Geef hierbij de onderstaande informatie door.
-    </p>
-    <p>
-        Omdat %idpName% niet de juiste attributen aan %suiteName% doorgeeft is het inloggen mislukt. De volgende attributen zijn vereist om succesvol in te loggen op het %suiteName% platform:
-        <ul>
-            <li>UID</li>
-            <li>schacHomeOrganization</li>
-        </ul>
-    </p>',
-    'error_missing_required_fields_desc_no_name'=> '<p>
-        Jouw %organisationNoun% geeft niet de benodigde informatie vrij. Daarom kun je deze applicatie niet gebruiken.
-    </p>
-    <p>
-        Neem alstublieft contact op met jouw %organisationNoun%. Geef hierbij de onderstaande informatie door.
-    </p>
-    <p>
-        Omdat je %organisationNoun% niet de juiste attributen aan %suiteName% doorgeeft is het inloggen mislukt. De volgende attributen zijn vereist om succesvol in te loggen op het %suiteName% platform:
-        <ul>
-            <li>UID</li>
-            <li>schacHomeOrganization</li>
-        </ul>
-    </p>',
+    'error_missing_required_fields_desc'=> '%idpName% geeft niet de benodigde informatie vrij. Daarom kun je %spName% niet gebruiken. Neem alstublieft contact op met de helpdesk van %idpName%. Geef hierbij de onderstaande informatie door. Omdat %idpName% niet de juiste attributen aan %suiteName% doorgeeft, of in het onjuiste formaat, is het inloggen mislukt. De volgende attributen zijn vereist om succesvol in te loggen op het %suiteName% platform:',
+    'error_missing_required_fields_desc_no_idp_name'=> 'Jouw %organisationNoun% geeft niet de benodigde informatie vrij. Daarom kun je %spName% niet gebruiken. Neem alstublieft contact op met de helpdesk van jouw %organisationNoun%. Geef hierbij de onderstaande informatie door. Omdat je %organisationNoun% niet de juiste attributen aan %suiteName% doorgeeft is het inloggen mislukt. De volgende attributen zijn vereist om succesvol in te loggen op het %suiteName% platform:',
+    'error_missing_required_fields_desc_no_sp_name'=> '%idpName% geeft niet de benodigde informatie vrij. Daarom kun je deze applicatie  niet gebruiken. Neem alstublieft contact op met de helpdesk van %idpName%. Geef hierbij de onderstaande informatie door. Omdat %idpName% niet de juiste attributen aan %suiteName% doorgeeft is het inloggen mislukt. De volgende attributen zijn vereist om succesvol in te loggen op het %suiteName% platform:',
+    'error_missing_required_fields_desc_no_name'=> 'Jouw %organisationNoun% geeft niet de benodigde informatie vrij. Daarom kun je deze applicatie niet gebruiken. Neem alstublieft contact op met jouw %organisationNoun%. Geef hierbij de onderstaande informatie door. Omdat je %organisationNoun% niet de juiste attributen aan %suiteName% doorgeeft is het inloggen mislukt. De volgende attributen zijn vereist om succesvol in te loggen op het %suiteName% platform:',
     'error_invalid_attribute_value' => 'Fout - Attribuutwaarde niet toegestaan',
     'error_invalid_attribute_value_desc' => '%idpName% geeft een waarde door in het attribuut %attributeName% ("%attributeValue%") die niet is toegestaan voor deze %organisationNoun%. Inloggen is daarom niet mogelijk. Alleen %idpName% kan dit oplossen. Neem dus contact op met de helpdesk van %idpName%.',
     'error_invalid_attribute_value_desc_no_idp_name' => 'Je %organisationNoun% geeft een waarde door in het attribuut %attributeName% ("%attributeValue%") die niet is toegestaan voor deze %organisationNoun%. Inloggen is daarom niet mogelijk. Alleen jouw %organisationNoun% kan dit oplossen. Neem dus contact op met de helpdesk van je eigen %organisationNoun%.',
     'error_received_error_status_code'     => 'Error - Fout bij Identity Provider',
-    'error_received_error_status_code_desc'=> '<p>
-Je %organisationNoun% heeft je de toegang geweigerd tot deze dienst. Je zult dus contact moeten opnemen met de (IT-)helpdesk van je eigen %organisationNoun% om te kijken of dit verholpen kan worden.
-    </p>',
+    'error_received_error_status_code_desc'=> 'Je %organisationNoun% heeft je de toegang geweigerd tot deze dienst. Je zult dus contact moeten opnemen met de (IT-)helpdesk van je eigen %organisationNoun% om te kijken of dit verholpen kan worden.',
     'error_received_invalid_response'        => 'Fout - Ongeldig SAML-bericht van %idpName%',
     'error_received_invalid_response_no_idp_name'        => 'Fout - Ongeldig SAML-bericht van %organisationNoun%',
     'error_received_invalid_signed_response' => 'Fout - Ongeldige handtekening op antwoord van %idpName%',
@@ -268,11 +221,11 @@ Je %organisationNoun% heeft je de toegang geweigerd tot deze dienst. Je zult dus
     'error_stuck_in_authentication_loop_desc_no_name' => 'Je bent succesvol ingelogd bij je %organisationNoun% maar de dienst waar je naartoe wilt stuurt je weer terug naar %suiteName%. Omdat je succesvol bent ingelogd, stuurt %suiteName% je weer naar de dienst, wat resulteert in een oneindig zwart gat. Dit komt waarschijnlijk door een foutje aan de kant van de dienst.',
     'error_no_authentication_request_received' => 'Fout - Geen authenticatie-aanvraag ontvangen.',
     'error_authn_context_class_ref_blacklisted' => 'Fout - Waarde van AuthnContextClassRef is niet toegestaan',
-    'error_authn_context_class_ref_blacklisted_desc' => '<p>Je kunt niet inloggen omdat %idpName% een waarde stuurde voor AuthnContextClassRef die niet is toegestaan. Neem contact op met de helpdesk van %idpName% om dit op te lossen</p>',
-    'error_authn_context_class_ref_blacklisted_desc_no_idp_name' => '<p>Je kunt niet inloggen omdat je %organisationNoun% een waarde stuurde voor AuthnContextClassRef die niet is toegestaan. Neem contact op met de helpdesk van je %organisationNoun% om dit op te lossen</p>',
+    'error_authn_context_class_ref_blacklisted_desc' => 'Je kunt niet inloggen omdat %idpName% een waarde stuurde voor AuthnContextClassRef die niet is toegestaan. Neem contact op met de helpdesk van %idpName% om dit op te lossen.',
+    'error_authn_context_class_ref_blacklisted_desc_no_idp_name' => 'Je kunt niet inloggen omdat je %organisationNoun% een waarde stuurde voor AuthnContextClassRef die niet is toegestaan. Neem contact op met de helpdesk van je %organisationNoun% om dit op te lossen.',
     'error_invalid_mfa_authn_context_class_ref' => 'Fout - Multi-factor authenticatie mislukt',
-    'error_invalid_mfa_authn_context_class_ref_desc' => '<p>%idpName% vereist multi-factor authenticatie voor deze dienst. Je tweede factor kon echter niet gevalideerd worden. Neem contact op met de helpdesk van %idpName% om dit op te lossen.</p>',
-    'error_invalid_mfa_authn_context_class_ref_desc_no_idp_name' => '<p>Jouw %organisationNoun% vereist multi-factor authenticatie voor deze dienst. Je tweede factor kon echter niet gevalideerd worden. Neem contact op met de helpdesk van je %organisationNoun% om dit op te lossen.</p>',
+    'error_invalid_mfa_authn_context_class_ref_desc' => '%idpName% vereist multi-factor authenticatie voor deze dienst. Je tweede factor kon echter niet gevalideerd worden. Neem contact op met de helpdesk van %idpName% om dit op te lossen.',
+    'error_invalid_mfa_authn_context_class_ref_desc_no_idp_name' => 'Jouw %organisationNoun% vereist multi-factor authenticatie voor deze dienst. Je tweede factor kon echter niet gevalideerd worden. Neem contact op met de helpdesk van je %organisationNoun% om dit op te lossen.',
 
     /**
      * %1 AttributeName
@@ -296,14 +249,16 @@ Je %organisationNoun% heeft je de toegang geweigerd tot deze dienst. Je zult dus
     'allowed_scopes'                                => 'Toegestane scopes',
 
     'error_unknown_requesterid_in_authnrequest'         => 'Error - Deze dienst is niet geregistreerd bij %suiteName%.',
-    'error_unknown_requesterid_in_authnrequest_desc'    => '<p>Deze dienst is niet bekend.</p>',
+    'error_unknown_requesterid_in_authnrequest_desc'    => 'Deze dienst is niet bekend.',
     'error_clock_issue_title' => 'Fout - De Assertion is nog niet geldig of is verlopen',
     'error_clock_issue_desc' => 'Dit komt waarschijnlijk doordat de tijd tussen %idpName% en %suiteName% te ver uiteen loopt. Controleer de tijd op de %organisationNoun%.',
     'error_clock_issue_desc_no_idp_name' => 'Dit komt waarschijnlijk doordat de tijd tussen de %organisationNoun% en %suiteName% te ver uiteen loopt. Controleer de tijd op de IdP.',
     'error_stepup_callout_unknown_title' => 'Fout - Onbekend sterke authenticatie probleem',
     'error_stepup_callout_unknown_desc' => 'Inloggen met sterke authenticatie is niet gelukt en we weten niet precies waarom. Probeer het eerst eens opnieuw door terug te gaan naar de dienst en opnieuw in te loggen. Lukt dit niet, neem dan contact op met de helpdesk van je %organisationNoun%.',
     'error_stepup_callout_unmet_loa_title' => 'Fout - Geen geschikt token gevonden',
-    'error_stepup_callout_unmet_loa_desc' => 'Om toegang te krijgen tot deze dienst heb je een geregistreerd token nodig met een bepaald zekerheidsniveau. Je hebt nu ofwel geen token geregistreerd, of het zekerheidsniveau van het token dat je hebt geregistreerd is te laag. Volg de link hieronder voor meer informatie over het registratieproces.<br/><br/><a target="_blank" href="https://support.surfconext.nl/stepup-noauthncontext-nl">Lees meer over het registratieproces.</a>',
+    'error_stepup_callout_unmet_loa_desc' => 'Om toegang te krijgen tot deze dienst heb je een geregistreerd token nodig met een bepaald zekerheidsniveau. Je hebt nu ofwel geen token geregistreerd, of het zekerheidsniveau van het token dat je hebt geregistreerd is te laag. Volg de link hieronder voor meer informatie over het registratieproces.',
+    'error_stepup_callout_unmet_loa_link_text' => 'Lees meer over het registratieproces.',
+    'error_stepup_callout_unmet_loa_link_target' => 'https://support.surfconext.nl/stepup-noauthncontext-nl',
     'error_stepup_callout_user_cancelled_title' => 'Fout - Inloggen afgebroken',
     'error_stepup_callout_user_cancelled_desc' => 'Je hebt het inloggen afgebroken. Ga terug naar de dienst als je het opnieuw wilt proberen.',
     'error_metadata_entity_id_not_found' => 'Metadata kan niet gegenereerd worden',
@@ -324,7 +279,8 @@ Je %organisationNoun% heeft je de toegang geweigerd tot deze dienst. Je zult dus
     // Logout
     'logout' => 'uitloggen',
     'logout_description' => 'Deze applicatie maakt gebruik van centrale login. Hiermee is het mogelijk om met single sign on bij verschillende applicaties in te loggen. Om er 100% zeker van te zijn dat je uitgelogd bent, moet je de browser helemaal afsluiten.',
-    'logout_information_link' => '',
+    'logout_information_link_text' => '',
+    'logout_information_link_target' => '',
 
     // Error page wiki link in footer, keep empty to hide block in footer
     'error_feedback_wiki_links_feedback_unknown_error' => 'https://support.surfconext.nl/help-error-error-nl',
@@ -385,4 +341,9 @@ Je %organisationNoun% heeft je de toegang geweigerd tot deze dienst. Je zult dus
     'error_feedback_idp_contact_label_small_authentication_feedback_stepup_callout_unmet_loa' => '',
     'error_feedback_idp_contact_label_small_authentication_feedback_stepup_callout_unknown' => '',
     'error_feedback_idp_contact_label_small_authentication_feedback_metadata_entity_not_found' => '',
+
+    // Metadata
+    'metadata_organization_name' => '%suiteName%',
+    'metadata_organization_displayname' => '%suiteName%',
+    'metadata_organization_url' => '%supportUrl%',
 ];

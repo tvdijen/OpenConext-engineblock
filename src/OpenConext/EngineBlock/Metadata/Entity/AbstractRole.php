@@ -23,11 +23,11 @@ use Doctrine\ORM\Mapping as ORM;
 use OpenConext\EngineBlock\Metadata\Coins;
 use OpenConext\EngineBlock\Metadata\ContactPerson;
 use OpenConext\EngineBlock\Metadata\Logo;
+use OpenConext\EngineBlock\Metadata\Mdui;
 use OpenConext\EngineBlock\Metadata\MetadataRepository\Visitor\VisitorInterface;
 use OpenConext\EngineBlock\Metadata\Organization;
 use OpenConext\EngineBlock\Metadata\Service;
 use OpenConext\EngineBlock\Metadata\X509\X509Certificate;
-use RobRichards\XMLSecLibs\XMLSecurityKey;
 use RuntimeException;
 use SAML2\Constants;
 
@@ -112,49 +112,49 @@ abstract class AbstractRole
 
     /**
      * @var string
-     *
+     * @deprecated Will be removed in favour of using the Mdui value object, use the getter for this field instead
      * @ORM\Column(name="description_nl", type="string")
      */
     public $descriptionNl;
 
     /**
      * @var string
-     *
+     * @deprecated Will be removed in favour of using the Mdui value object, use the getter for this field instead
      * @ORM\Column(name="description_en", type="string")
      */
     public $descriptionEn;
 
     /**
      * @var string
-     *
+     * @deprecated Will be removed in favour of using the Mdui value object, use the getter for this field instead
      * @ORM\Column(name="description_pt", type="string")
      */
     public $descriptionPt;
 
     /**
      * @var string
-     *
+     * @deprecated Will be removed in favour of using the Mdui value object, use the getter for this field instead
      * @ORM\Column(name="display_name_nl", type="string")
      */
     public $displayNameNl;
 
     /**
      * @var string
-     *
+     * @deprecated Will be removed in favour of using the Mdui value object, use the getter for this field instead
      * @ORM\Column(name="display_name_en", type="string")
      */
     public $displayNameEn;
 
     /**
      * @var string
-     *
+     * @deprecated Will be removed in favour of using the Mdui value object, use the getter for this field instead
      * @ORM\Column(name="display_name_pt", type="string")
      */
     public $displayNamePt;
 
     /**
      * @var Logo
-     *
+     * @deprecated Will be removed in favour of using the Mdui value object, use the getter for this field instead
      * @ORM\Column(name="logo", type="object")
      */
     public $logo;
@@ -162,41 +162,41 @@ abstract class AbstractRole
     /**
      * @var Organization
      *
-     * @ORM\Column(name="organization_nl_name",type="object", nullable=true)
+     * @ORM\Column(name="organization_nl_name",type="object", nullable=true, length=65535)
      */
     public $organizationNl;
 
     /**
      * @var Organization
      *
-     * @ORM\Column(name="organization_en_name",type="object", nullable=true)
+     * @ORM\Column(name="organization_en_name",type="object", nullable=true, length=65535)
      */
     public $organizationEn;
 
     /**
      * @var Organization
      *
-     * @ORM\Column(name="organization_pt_name",type="object", nullable=true)
+     * @ORM\Column(name="organization_pt_name",type="object", nullable=true, length=65535)
      */
     public $organizationPt;
 
     /**
      * @var string
-     *
+     * @deprecated Will be removed in favour of using the Mdui value object, use the getter for this field instead
      * @ORM\Column(name="keywords_nl", type="string")
      */
     public $keywordsNl;
 
     /**
      * @var string
-     *
+     * @deprecated Will be removed in favour of using the Mdui value object, use the getter for this field instead
      * @ORM\Column(name="keywords_en", type="string")
      */
     public $keywordsEn;
 
     /**
      * @var string
-     *
+     * @deprecated Will be removed in favour of using the Mdui value object, use the getter for this field instead
      * @ORM\Column(name="keywords_pt", type="string")
      */
     public $keywordsPt;
@@ -204,7 +204,7 @@ abstract class AbstractRole
     /**
      * @var X509Certificate[]
      *
-     * @ORM\Column(name="certificates", type="array")
+     * @ORM\Column(name="certificates", type="array", length=65535)
      */
     public $certificates = array();
 
@@ -218,7 +218,7 @@ abstract class AbstractRole
     /**
      * @var ContactPerson[]
      *
-     * @ORM\Column(name="contact_persons", type="array")
+     * @ORM\Column(name="contact_persons", type="array", length=65535)
      */
     public $contactPersons;
 
@@ -232,14 +232,14 @@ abstract class AbstractRole
     /**
      * @var string[]
      *
-     * @ORM\Column(name="name_id_formats", type="array")
+     * @ORM\Column(name="name_id_formats", type="array", length=65535)
      */
     public $supportedNameIdFormats;
 
     /**
      * @var Service
      *
-     * @ORM\Column(name="single_logout_service", type="object", nullable=true)
+     * @ORM\Column(name="single_logout_service", type="object", nullable=true, length=65535)
      */
     public $singleLogoutService;
 
@@ -253,7 +253,7 @@ abstract class AbstractRole
     /**
      * @var string
      *
-     * @ORM\Column(name="manipulation", type="text")
+     * @ORM\Column(name="manipulation", type="text", length=65535)
      */
     public $manipulation;
 
@@ -265,62 +265,44 @@ abstract class AbstractRole
     protected $coins = array();
 
     /**
-     * @param $entityId
-     * @param Organization $organizationEn
-     * @param Organization $organizationNl
-     * @param Organization $organizationPt
-     * @param Service $singleLogoutService
-     * @param array $certificates
-     * @param array $contactPersons
-     * @param string $descriptionEn
-     * @param string $descriptionNl
-     * @param string $descriptionPt
-     * @param string $displayNameEn
-     * @param string $displayNameNl
-     * @param string $displayNamePt
-     * @param string $keywordsEn
-     * @param string $keywordsNl
-     * @param string $keywordsPt
-     * @param Logo $logo
-     * @param string $nameEn
-     * @param string $nameNl
-     * @param string $namePt
-     * @param null $nameIdFormat
-     * @param array $supportedNameIdFormats
-     * @param bool $requestsMustBeSigned
-     * @param string $workflowState
-     * @param string $manipulation
+     * @var Mdui
+     *
+     * @ORM\Column(name="mdui", type="engineblock_metadata_mdui")
      */
+    protected $mdui;
+
     public function __construct(
         $entityId,
+        Mdui $mdui,
         Organization $organizationEn = null,
         Organization $organizationNl = null,
         Organization $organizationPt = null,
         Service $singleLogoutService = null,
         array $certificates = array(),
         array $contactPersons = array(),
-        $descriptionEn = '',
-        $descriptionNl = '',
-        $descriptionPt = '',
-        $displayNameEn = '',
-        $displayNameNl = '',
-        $displayNamePt = '',
-        $keywordsEn = '',
-        $keywordsNl = '',
-        $keywordsPt = '',
-        Logo $logo = null,
-        $nameEn = '',
-        $nameNl = '',
-        $namePt = '',
-        $nameIdFormat = null,
-        $supportedNameIdFormats = array(
+        ?string $descriptionEn = '',
+        ?string $descriptionNl = '',
+        ?string $descriptionPt = '',
+        ?string $displayNameEn = '',
+        ?string $displayNameNl = '',
+        ?string $displayNamePt = '',
+        ?string $keywordsEn = '',
+        ?string $keywordsNl = '',
+        ?string $keywordsPt = '',
+        ?Logo $logo = null,
+        ?string $nameEn = '',
+        ?string $nameNl = '',
+        ?string $namePt = '',
+        ?string $nameIdFormat = null,
+        array $supportedNameIdFormats = array(
             Constants::NAMEID_TRANSIENT,
             Constants::NAMEID_PERSISTENT,
         ),
-        $requestsMustBeSigned = false,
-        $workflowState = self::WORKFLOW_STATE_DEFAULT,
-        $manipulation = ''
+        bool $requestsMustBeSigned = false,
+        string $workflowState = self::WORKFLOW_STATE_DEFAULT,
+        string $manipulation = ''
     ) {
+        $this->mdui = $mdui;
         $this->certificates = $certificates;
         $this->contactPersons = $contactPersons;
         $this->descriptionEn = $descriptionEn;
@@ -380,11 +362,13 @@ abstract class AbstractRole
         throw new RuntimeException('Unknown workflow state');
     }
 
-    /**
-     * @return Coins
-     */
-    public function getCoins()
+    public function getCoins(): Coins
     {
         return $this->coins;
+    }
+
+    public function getMdui(): Mdui
+    {
+        return $this->mdui;
     }
 }

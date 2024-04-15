@@ -90,9 +90,15 @@ class StepupMockController extends Controller
      */
     private function getAvailableResponses(Request $request)
     {
+        $results = [];
+
         // Parse successfull loa3
         $samlResponse = $this->mockStepupGateway->handleSsoSuccess($request, $this->getFullRequestUri($request));
         $results['success'] = $this->getResponseData($request, $samlResponse);
+
+        // Parse successfull loa3 with changed audience
+        $samlResponse = $this->mockStepupGateway->handleSsoSuccess($request, $this->getFullRequestUri($request), true);
+        $results['success-audience'] = $this->getResponseData($request, $samlResponse);
 
         // Parse successfull loa2
         $samlResponse = $this->mockStepupGateway->handleSsoSuccessLoa2($request, $this->getFullRequestUri($request));

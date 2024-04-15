@@ -16,12 +16,12 @@ const config = `${__dirname}/../../app/config/parameters.yml`;
 try {
   console.log('Reading contents of parameters.yml.\n');
   const fileContents = fs.readFileSync(config, 'utf8');
-  const parameters = yaml.safeLoadAll(fileContents);
+  const parameters = yaml.loadAll(fileContents);
   const theme = process.env.EB_THEME || parameters[0].parameters['theme.name'] || 'skeune';
 
   console.log(`Using theme ${theme} to run the watch.\n`);
-  executeShellCommand(`cd ${__dirname}/.. && EB_THEME=${theme} npm run watch:css`);
-  executeShellCommand(`cd ${__dirname}/.. && EB_THEME=${theme} npm run watch:js`);
+  executeShellCommand(`cd ${__dirname}/.. && EB_THEME=${theme} yarn watch:css`);
+  executeShellCommand(`cd ${__dirname}/.. && EB_THEME=${theme} yarn watch:js`);
 } catch (e) {
   console.log(e);
 }

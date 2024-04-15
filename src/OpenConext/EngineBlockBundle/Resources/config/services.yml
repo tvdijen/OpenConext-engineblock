@@ -70,6 +70,7 @@ services:
             - "@engineblock.configuration.stepup.gateway_loa_mapping"
             - "@engineblock.configuration.stepup.endpoint"
             - "@engineblock.configuration.stepup.loa_repository"
+            - "@logger"
 
     engineblock.service.consent:
         class: OpenConext\EngineBlock\Service\ConsentService
@@ -128,6 +129,8 @@ services:
             - '@OpenConext\EngineBlock\Metadata\X509\KeyPairFactory'
             - '@OpenConext\EngineBlock\Metadata\Factory\ValueObject\EngineBlockConfiguration'
             - '@engineblock.url_provider'
+            - '@engineblock.features'
+            - '%stepup.sfo.override_engine_entityid%'
 
     OpenConext\EngineBlock\Metadata\Factory\ValueObject\EngineBlockConfiguration:
         public: false

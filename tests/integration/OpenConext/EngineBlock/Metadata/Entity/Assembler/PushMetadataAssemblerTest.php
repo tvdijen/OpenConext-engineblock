@@ -37,10 +37,21 @@ class PushMetadataAssemblerTest extends TestCase
 
     private $assembler;
 
-    public function setUp()
+    public function setUp(): void
     {
         $logger = m::mock(LoggerInterface::class);
         $this->assembler = new PushMetadataAssembler(new AllowedSchemeValidator(['http', 'https']), $logger);
+    }
+
+    public function test_it_rejects_empty_push()
+    {
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('Received 0 connections, refusing to process');
+
+        $connection = '{}';
+        $input = json_decode($connection);
+
+        $this->assembler->assemble($input);
     }
 
     /**

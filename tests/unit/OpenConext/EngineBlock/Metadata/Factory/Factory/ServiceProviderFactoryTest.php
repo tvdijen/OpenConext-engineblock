@@ -18,25 +18,25 @@
 namespace OpenConext\EngineBlock\Metadata\Factory\Factory;
 
 use EngineBlock_Attributes_Metadata as AttributesMetadata;
+use Mockery\Mock;
+use OpenConext\EngineBlock\Exception\MissingParameterException;
 use OpenConext\EngineBlock\Metadata\Coins;
 use OpenConext\EngineBlock\Metadata\ContactPerson;
 use OpenConext\EngineBlock\Metadata\Entity\ServiceProvider;
 use OpenConext\EngineBlock\Metadata\Factory\AbstractEntityTest;
-use OpenConext\EngineBlock\Metadata\Factory\Adapter\IdentityProviderEntity;
-use OpenConext\EngineBlock\Metadata\Factory\Adapter\ServiceProviderEntity;
-use OpenConext\EngineBlock\Metadata\Factory\Decorator\EngineBlockServiceProvider;
 use OpenConext\EngineBlock\Metadata\Factory\ServiceProviderEntityInterface;
 use OpenConext\EngineBlock\Metadata\Factory\ValueObject\EngineBlockConfiguration;
 use OpenConext\EngineBlock\Metadata\IndexedService;
 use OpenConext\EngineBlock\Metadata\Logo;
+use OpenConext\EngineBlock\Metadata\Mdui;
 use OpenConext\EngineBlock\Metadata\Organization;
 use OpenConext\EngineBlock\Metadata\RequestedAttribute;
-use OpenConext\EngineBlock\Metadata\Service;
 use OpenConext\EngineBlock\Metadata\X509\KeyPairFactory;
 use OpenConext\EngineBlock\Metadata\X509\X509Certificate;
 use OpenConext\EngineBlock\Metadata\X509\X509KeyPair;
+use OpenConext\EngineBlockBundle\Configuration\TestFeatureConfiguration;
 use OpenConext\EngineBlockBundle\Url\UrlProvider;
-use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\MockObject\MockObject;
 use RobRichards\XMLSecLibs\XMLSecurityKey;
 use SAML2\Constants;
 use Symfony\Component\Translation\TranslatorInterface;
@@ -48,44 +48,56 @@ class ServiceProviderFactoryTest extends AbstractEntityTest
      */
     private $factory;
     /**
-     * @var \PHPUnit\Framework\MockObject\MockObject
+     * @var MockObject
      */
     private $attributes;
     /**
-     * @var \PHPUnit\Framework\MockObject\MockObject
+     * @var MockObject
      */
     private $keyPairFactory;
     /**
-     * @var \PHPUnit\Framework\MockObject\MockObject
+     * @var MockObject
      */
     private $configuration;
     /**
-     * @var \PHPUnit\Framework\MockObject\MockObject
+     * @var MockObject
      */
     private $urlProvider;
     /**
-     * @var \PHPUnit\Framework\MockObject\MockObject
+     * @var MockObject
      */
     private $translator;
 
-    public function setup()
+    /** @var TestFeatureConfiguration&MockObject */
+    private $featureConfiguration;
+    /** @var string */
+    private $entityIdOverride;
+
+    public function setUp(): void
     {
         $this->attributes = $this->createMock(AttributesMetadata::class);
         $this->keyPairFactory = $this->createMock(KeyPairFactory::class);
         $this->configuration = $this->createMock(EngineBlockConfiguration::class);
         $this->urlProvider = $this->createMock(UrlProvider::class);
+        $this->featureConfiguration = $this->createMock(TestFeatureConfiguration::class);
+        $this->entityIdOverride = 'https://foobar.openconext.org';
 
-        $this->factory = new ServiceProviderFactory($this->attributes, $this->keyPairFactory, $this->configuration, $this->urlProvider);
+        $this->factory = new ServiceProviderFactory(
+            $this->attributes,
+            $this->keyPairFactory,
+            $this->configuration,
+            $this->urlProvider,
+            $this->featureConfiguration,
+            $this->entityIdOverride
+        );
 
         $this->translator = $this->createMock(TranslatorInterface::class);
     }
 
     public function test_create_engineblock_entity_from()
     {
-        $entity = new ServiceProvider('entityId');
         $entity = $this->factory->createEngineBlockEntityFrom(
-            'entityID',
-            'default'
+            'entityID'
         );
 
         $this->assertInstanceOf(ServiceProviderEntityInterface::class, $entity);
@@ -93,10 +105,8 @@ class ServiceProviderFactoryTest extends AbstractEntityTest
 
     public function test_create_stepup_entity_from()
     {
-        $entity = new ServiceProvider('entityId');
         $entity = $this->factory->createStepupEntityFrom(
-            'entityID',
-            'default'
+            'entityID'
         );
 
         $this->assertInstanceOf(ServiceProviderEntityInterface::class, $entity);
@@ -111,8 +121,18 @@ class ServiceProviderFactoryTest extends AbstractEntityTest
 
         $this->translator->expects($this->at(1))
             ->method('trans')
-            ->with('openconext_support_url')
-            ->willReturn('configuredSupportUrl');
+            ->with('metadata_organization_name')
+            ->willReturn('configuredOrganizationName');
+
+        $this->translator->expects($this->at(2))
+            ->method('trans')
+            ->with('metadata_organization_displayname')
+            ->willReturn('configuredOrganizationDisplayName');
+
+        $this->translator->expects($this->at(3))
+            ->method('trans')
+            ->with('metadata_organization_url')
+            ->willReturn('configuredOrganizationUrl');
 
         $this->configuration = new EngineBlockConfiguration(
             $this->translator,
@@ -143,19 +163,25 @@ class ServiceProviderFactoryTest extends AbstractEntityTest
         $this->urlProvider->expects($this->exactly(2))
             ->method('getUrl')
             ->withConsecutive(
-                // EntityId: EngineBlockServiceProvider::getEntityId
+            // EntityId: EngineBlockServiceProvider::getEntityId
                 ['metadata_sp', false, null, null],
                 // ACS: EngineBlockServiceProvider::getAssertionConsumerService
                 ['authentication_sp_consume_assertion', false, null, null]
-            ) ->willReturnOnConsecutiveCalls(
-                // EntityId
+            )->willReturnOnConsecutiveCalls(
+            // EntityId
                 'EbEntityId',
                 // ACS
                 'proxiedAcsLocation'
             );
 
-        $this->factory = new ServiceProviderFactory($this->attributes, $this->keyPairFactory, $this->configuration, $this->urlProvider);
-
+        $this->factory = new ServiceProviderFactory(
+            $this->attributes,
+            $this->keyPairFactory,
+            $this->configuration,
+            $this->urlProvider,
+            $this->featureConfiguration,
+            $this->entityIdOverride
+        );
         $adapter = $this->createServiceProviderAdapter();
         $decorator = $this->factory->createEngineBlockEntityFrom('initial-key-id');
 
@@ -165,13 +191,13 @@ class ServiceProviderFactoryTest extends AbstractEntityTest
         $logo->height = 1009;
 
         // Organization we would expect
-        $organization = new Organization('test-suite', 'test-suite', 'configuredSupportUrl');
+        $organization = new Organization('configuredOrganizationName', 'configuredOrganizationDisplayName', 'configuredOrganizationUrl');
 
         // contacts we would expect
         $contactPersons = [
-            ContactPerson::from('support', 'test-suite', 'Support', 'configuredSupportMail'),
-            ContactPerson::from('technical', 'test-suite', 'Support', 'configuredSupportMail'),
-            ContactPerson::from('administrative', 'test-suite', 'Support', 'configuredSupportMail'),
+            ContactPerson::from('support', 'configuredOrganizationName', 'Support', 'configuredSupportMail'),
+            ContactPerson::from('technical', 'configuredOrganizationName', 'Support', 'configuredSupportMail'),
+            ContactPerson::from('administrative', 'configuredOrganizationName', 'Support', 'configuredSupportMail'),
         ];
 
         $supportedNameIdFormats = [
@@ -185,6 +211,7 @@ class ServiceProviderFactoryTest extends AbstractEntityTest
 
         // default values
         $overrides['id'] = null;
+        $overrides['mdui'] = Mdui::emptyMdui();
         $overrides['displayNameNl'] = '';
         $overrides['displayNameEn'] = '';
         $overrides['displayNamePt'] = '';
@@ -265,8 +292,18 @@ class ServiceProviderFactoryTest extends AbstractEntityTest
 
         $this->translator->expects($this->at(1))
             ->method('trans')
-            ->with('openconext_support_url')
-            ->willReturn('configuredSupportUrl');
+            ->with('metadata_organization_name')
+            ->willReturn('configuredOrganizationName');
+
+        $this->translator->expects($this->at(2))
+            ->method('trans')
+            ->with('metadata_organization_displayname')
+            ->willReturn('configuredOrganizationDisplayName');
+
+        $this->translator->expects($this->at(3))
+            ->method('trans')
+            ->with('metadata_organization_url')
+            ->willReturn('configuredOrganizationUrl');
 
         $this->configuration = new EngineBlockConfiguration(
             $this->translator,
@@ -298,18 +335,25 @@ class ServiceProviderFactoryTest extends AbstractEntityTest
         $this->urlProvider->expects($this->exactly(2))
             ->method('getUrl')
             ->withConsecutive(
-                // EntityId
+            // EntityId
                 ['metadata_stepup', false, null, null],
                 // ACS: ServiceProvider::getAssertionConsumerService
                 ['authentication_stepup_consume_assertion', false, null, null]
-            ) ->willReturnOnConsecutiveCalls(
-                // EntityId
+            )->willReturnOnConsecutiveCalls(
+            // EntityId
                 'StepupEntityId',
                 // ACS
                 'proxiedAcsLocation'
             );
 
-        $this->factory = new ServiceProviderFactory($this->attributes, $this->keyPairFactory, $this->configuration, $this->urlProvider);
+        $this->factory = new ServiceProviderFactory(
+            $this->attributes,
+            $this->keyPairFactory,
+            $this->configuration,
+            $this->urlProvider,
+            $this->featureConfiguration,
+            $this->entityIdOverride
+        );
 
         $adapter = $this->createServiceProviderAdapter();
         $decorator = $this->factory->createStepupEntityFrom('initial-key-id');
@@ -320,6 +364,7 @@ class ServiceProviderFactoryTest extends AbstractEntityTest
 
         // default values
         $overrides['id'] = null;
+        $overrides['mdui'] = Mdui::emptyMdui();
         $overrides['displayNameNl'] = '';
         $overrides['displayNameEn'] = '';
         $overrides['displayNamePt'] = '';
@@ -382,5 +427,81 @@ class ServiceProviderFactoryTest extends AbstractEntityTest
         $this->runServiceProviderAssertions($adapter, $decorator, $overrides);
 
         $this->assertInstanceOf(ServiceProviderEntityInterface::class, $decorator);
+    }
+
+    public function test_stepup_entity_id_can_be_overridden()
+    {
+        $this->featureConfiguration
+            ->expects($this->once())
+            ->method('hasFeature')
+            ->with('eb.stepup.sfo.override_engine_entityid')
+            ->willReturn(true);
+
+        $this->featureConfiguration
+            ->expects($this->once())
+            ->method('isEnabled')
+            ->with('eb.stepup.sfo.override_engine_entityid')
+            ->willReturn(true);
+
+        $entity = $this->factory->createStepupEntityFrom(
+            'entityID'
+        );
+
+        $this->assertEquals($this->entityIdOverride, $entity->getEntityId());
+    }
+
+    public function test_stepup_entity_id_override_feature_flag_must_be_enabled()
+    {
+        $this->featureConfiguration
+            ->expects($this->once())
+            ->method('hasFeature')
+            ->with('eb.stepup.sfo.override_engine_entityid')
+            ->willReturn(true);
+
+        $this->featureConfiguration
+            ->expects($this->once())
+            ->method('isEnabled')
+            ->with('eb.stepup.sfo.override_engine_entityid')
+            ->willReturn(false);
+
+        $this->urlProvider
+            ->expects($this->once())
+            ->method('getUrl')
+            ->willReturn('https://normal-entity-id.example.org');
+
+        $entity = $this->factory->createStepupEntityFrom(
+            'entityID'
+        );
+
+        $this->assertEquals('https://normal-entity-id.example.org', $entity->getEntityId());
+    }
+
+    public function test_stepup_entity_id_when_flag_enabled_override_must_be_set()
+    {
+        $this->factory = new ServiceProviderFactory(
+            $this->attributes,
+            $this->keyPairFactory,
+            $this->configuration,
+            $this->urlProvider,
+            $this->featureConfiguration,
+            ''
+        );
+        $this->featureConfiguration
+            ->expects($this->once())
+            ->method('hasFeature')
+            ->with('eb.stepup.sfo.override_engine_entityid')
+            ->willReturn(true);
+
+        $this->featureConfiguration
+            ->expects($this->once())
+            ->method('isEnabled')
+            ->with('eb.stepup.sfo.override_engine_entityid')
+            ->willReturn(true);
+
+        $this->expectException(MissingParameterException::class);
+        $this->expectExceptionMessage('When feature "feature_stepup_sfo_override_engine_entityid" is enabled, you must provide the "stepup.sfo.override_engine_entityid" parameter.');
+        $this->factory->createStepupEntityFrom(
+            'entityID'
+        );
     }
 }

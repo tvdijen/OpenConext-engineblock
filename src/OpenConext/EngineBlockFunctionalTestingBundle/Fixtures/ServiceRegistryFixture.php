@@ -29,8 +29,11 @@ use OpenConext\EngineBlock\Metadata\Entity\IdentityProvider;
 use OpenConext\EngineBlock\Metadata\Entity\ServiceProvider;
 use OpenConext\EngineBlock\Metadata\IndexedService;
 use OpenConext\EngineBlock\Metadata\Logo;
+use OpenConext\EngineBlock\Metadata\Mdui;
+use OpenConext\EngineBlock\Metadata\MduiElement;
 use OpenConext\EngineBlock\Metadata\MetadataRepository\DoctrineMetadataRepository;
 use OpenConext\EngineBlock\Metadata\MfaEntityCollection;
+use OpenConext\EngineBlock\Metadata\MultilingualElement;
 use OpenConext\EngineBlock\Metadata\Service;
 use OpenConext\EngineBlock\Metadata\ShibMdScope;
 use OpenConext\EngineBlock\Metadata\StepupConnections;
@@ -155,7 +158,8 @@ class ServiceRegistryFixture
         );
 
         $this->setCoin($sp, 'termsOfServiceUrl', 'http://welcome.vm.openconext.org');
-        $sp->logo = new Logo('/images/placeholder.png');
+        $sp->getMdui()->setLogo(new Logo('/images/placeholder.png'));
+
 
         // The repository does not allow us to retrieve all SP's for good reason. In functional testing mode the total
         // number of SP's should always be limited.
@@ -437,7 +441,8 @@ QUERY;
         $logo->height = 100;
         $logo->width = 100;
 
-        $this->getIdentityProvider($entityId)->logo = $logo;
+        $idp = $this->getIdentityProvider($entityId);
+        $this->setMdui($idp, 'Logo', $logo);
 
         return $this;
     }
@@ -501,5 +506,20 @@ QUERY;
         $property = $object->getProperty('coins');
         $property->setAccessible(true);
         $property->setValue($role, $coins);
+    }
+    private function setMdui(AbstractRole $role, string $elementName, MultilingualElement $value)
+    {
+        $jsonData = $role->getMdui()->toJson();
+        $data = json_decode($jsonData, true);
+        $data[$elementName] = $value->jsonSerialize();
+
+        $jsonData = json_encode($data);
+
+        $mdui = Mdui::fromJson($jsonData);
+        $object = new ReflectionClass($role);
+
+        $property = $object->getProperty('mdui');
+        $property->setAccessible(true);
+        $property->setValue($role, $mdui);
     }
 }

@@ -53,15 +53,16 @@ class IdpsMetadataRepository
     }
 
     /**
-     * @param string $entityId
      * @return ServiceProvider
-     * @throws EntityNotFoundException
+     * @throws EntityCanNotBeFoundException
      */
     public function fetchServiceProviderByEntityId(string $entityId)
     {
         try {
             return $this->repository->fetchServiceProviderByEntityId($entityId);
         } catch (EntityNotFoundException $e) {
+            // The EntityCanNotBeFoundException is ensuring the exception is presented to the user on a nicely
+            // styled, meaningful error page.
             throw new EntityCanNotBeFoundException(sprintf('Unable to find the SP with entity ID "%s".', $entityId));
         }
     }

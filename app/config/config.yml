@@ -27,6 +27,8 @@ open_conext_engine_block:
         eb.enable_sso_notification: "%feature_enable_sso_notification%"
         eb.feature_enable_consent: "%feature_enable_consent%"
         eb.enable_sso_session_cookie: "%feature_enable_sso_session_cookie%"
+        eb.stepup.sfo.override_engine_entityid: "%feature_stepup_sfo_override_engine_entityid%"
+
 
 swiftmailer:
     transport: "%mailer_transport%"
@@ -77,6 +79,8 @@ twig:
         defaultTitle: "%view_default_title%"
         defaultHeader: "%view_default_header%"
         defaultLogo: "%view_default_logo%"
+        envName: "%env_name%"
+        envRibbonColor: "%env_ribbon_color%"
 
 doctrine:
     dbal:
@@ -101,6 +105,7 @@ doctrine:
             engineblock_collab_person_id: OpenConext\EngineBlockBundle\Doctrine\Type\CollabPersonIdType
             engineblock_collab_person_uuid: OpenConext\EngineBlockBundle\Doctrine\Type\CollabPersonUuidType
             engineblock_metadata_coins: OpenConext\EngineBlockBundle\Doctrine\Type\MetadataCoinType
+            engineblock_metadata_mdui: OpenConext\EngineBlockBundle\Doctrine\Type\MetadataMduiType
     orm:
         auto_generate_proxy_classes: "%kernel.debug%"
         proxy_dir: '%kernel.cache_dir%/doctrine/orm/Proxies'

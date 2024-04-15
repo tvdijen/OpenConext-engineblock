@@ -32,25 +32,26 @@ class EngineBlock_Corto_Mapper_Metadata_Entity_SsoDescriptor_UiInfo_Description
 
     public function mapTo(array $rootElement)
     {
-        $descriptions = array();
-        if (!empty($this->_entity->descriptionNl)) {
-            $descriptions['nl'] = $this->_entity->descriptionNl;
+        $descriptions = [];
+        $mdui = $this->_entity->getMdui();
+        $availableLanguages = $mdui->getLanguagesByElementName('Description');
+
+        foreach ($availableLanguages as $language) {
+            $description = $mdui->getDescription($language);
+            if ($description !== '') {
+                $descriptions[$language] = $description;
+            }
         }
-        if (!empty($this->_entity->descriptionEn)) {
-            $descriptions['en'] = $this->_entity->descriptionEn;
-        }
-        if (!empty($this->_entity->descriptionPt)) {
-            $descriptions['pt'] = $this->_entity->descriptionPt;
-        }
+
         if (empty($descriptions)) {
             return $rootElement;
         }
 
         if (!isset($rootElement['md:Extensions'])) {
-            $rootElement['md:Extensions'] = array();
+            $rootElement['md:Extensions'] = [];
         }
         if (!isset($rootElement['md:Extensions']['mdui:UIInfo'])) {
-            $rootElement['md:Extensions']['mdui:UIInfo'] = array(0=>array());
+            $rootElement['md:Extensions']['mdui:UIInfo'] = [0 => []];
         }
 
         foreach($descriptions as $languageCode => $value) {

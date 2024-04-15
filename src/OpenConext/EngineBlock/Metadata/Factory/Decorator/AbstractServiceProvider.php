@@ -23,6 +23,7 @@ use OpenConext\EngineBlock\Metadata\Coins;
 use OpenConext\EngineBlock\Metadata\ContactPerson;
 use OpenConext\EngineBlock\Metadata\IndexedService;
 use OpenConext\EngineBlock\Metadata\Logo;
+use OpenConext\EngineBlock\Metadata\Mdui;
 use OpenConext\EngineBlock\Metadata\Organization;
 use OpenConext\EngineBlock\Metadata\RequestedAttribute;
 use OpenConext\EngineBlock\Metadata\Service;
@@ -74,20 +75,12 @@ abstract class AbstractServiceProvider implements ServiceProviderEntityInterface
         return $this->entity->getName($locale);
     }
 
-    /**
-     * @param $locale
-     * @return string
-     */
-    public function getDescription($locale): string
+    public function getDescription(string $locale): string
     {
         return $this->entity->getDescription($locale);
     }
 
-    /**
-     * @param $locale
-     * @return string
-     */
-    public function getDisplayName($locale): string
+    public function getDisplayName(string $locale): string
     {
         return $this->entity->getDisplayName($locale);
     }
@@ -266,5 +259,10 @@ abstract class AbstractServiceProvider implements ServiceProviderEntityInterface
     public function isAttributeAggregationRequired(): bool
     {
         return $this->entity->isAttributeAggregationRequired();
+    }
+
+    public function getMdui(): Mdui
+    {
+        return $this->entity->getMdui();
     }
 }

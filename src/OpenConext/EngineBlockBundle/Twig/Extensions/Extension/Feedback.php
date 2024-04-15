@@ -19,6 +19,7 @@
 namespace OpenConext\EngineBlockBundle\Twig\Extensions\Extension;
 
 use EngineBlock_ApplicationSingleton;
+use EngineBlock_Saml2_ResponseAnnotationDecorator;
 use OpenConext\EngineBlock\Metadata\Entity\IdentityProvider;
 use OpenConext\EngineBlock\Metadata\MetadataRepository\MetadataRepositoryInterface;
 use OpenConext\EngineBlockBundle\Authentication\Service\SamlResponseHelper;
@@ -154,12 +155,16 @@ class Feedback extends Twig_Extension
         return '';
     }
 
-    public function hasBackToSpLink()
+    public function hasBackToSpLink(): bool
     {
         $info = $this->retrieveFeedbackInfo();
-        return $info->has('serviceProvider') &&
-            $info->has('identityProvider') &&
-            $info->has('requestId');
+        if (!$info->has('serviceProvider') ||
+            !$info->has('identityProvider') ||
+            !$info->has('requestId')) {
+            return false;
+        }
+        $response = $this->getSamlFailedResponse();
+        return $response !== '';
     }
 
     public function getSpName(): ?string
@@ -175,13 +180,22 @@ class Feedback extends Twig_Extension
 
     public function getSamlFailedResponse(): string
     {
-        $info = $this->retrieveFeedbackInfo();
-        return $this->samlResponseHelper->createAuthnFailedResponse(
-            $info->get('serviceProvider'),
-            $info->get('identityProvider'),
-            $info->get('requestId'),
-            $info->get('statusMessage') ?? ''
-        );
+        $session = $this->application->getSession();
+        $feedbackInfo = $session->get('feedbackInfo');
+        // If AuthnFailedResponse is not set, we are unable to render a createAuthnFailedResponse
+        $sspResponse = $feedbackInfo['AuthnFailedResponse'];
+        $value = '';
+        if (!is_null($sspResponse)) {
+            // Compose the Saml error response that can be used to travel back to the SP
+            $value = $this->samlResponseHelper->createAuthnFailedResponse(
+                $feedbackInfo['serviceProvider'],
+                $feedbackInfo['identityProvider'],
+                $feedbackInfo['requestId'],
+                $feedbackInfo['statusMessage'] ?? '',
+                $sspResponse
+            );
+        }
+        return $value;
     }
 
     /**
@@ -191,8 +205,8 @@ class Feedback extends Twig_Extension
      */
     private function retrieveFeedbackInfo()
     {
-        $feedbackInfo = $this->application->getSession()->get('feedbackInfo');
-
+        $session = $this->application->getSession();
+        $feedbackInfo = $session->get('feedbackInfo');
         $feedbackInfoMap = new FeedbackInformationMap();
 
         // Remove the empty valued feedback info entries.
@@ -204,6 +218,10 @@ class Feedback extends Twig_Extension
                 }
                 if ($value instanceof Issuer) {
                     $value = $value->getValue();
+                }
+                if ($key === 'AuthnFailedResponse') {
+                    // Don't show the AuthnFailedResponse base64 encoded response message in the feedback info table
+                    continue;
                 }
                 $feedbackInfoMap->add(new FeedbackInformation($key, $value));
             }

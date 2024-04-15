@@ -83,24 +83,25 @@ final class Consent
 
     private function getDisplayNameFields(): array
     {
-        if (!empty($this->serviceProvider->displayNameEn)) {
-            $fields['display_name']['en'] = $this->serviceProvider->displayNameEn;
+        $fields = [];
+        if (!empty($this->serviceProvider->getMdui()->hasDisplayName('en'))) {
+            $fields['display_name']['en'] = $this->serviceProvider->getMdui()->getDisplayName('en');
         } elseif (!empty($this->serviceProvider->nameEn)) {
             $fields['display_name']['en'] = $this->serviceProvider->nameEn;
         } else {
             $fields['display_name']['en'] = $this->serviceProvider->entityId;
         }
 
-        if (!empty($this->serviceProvider->displayNameNl)) {
-            $fields['display_name']['nl'] = $this->serviceProvider->displayNameNl;
+        if (!empty($this->serviceProvider->getMdui()->hasDisplayName('nl'))) {
+            $fields['display_name']['nl'] = $this->serviceProvider->getMdui()->getDisplayName('nl');
         } elseif (!empty($this->serviceProvider->nameNl)) {
             $fields['display_name']['nl'] = $this->serviceProvider->nameNl;
         } else {
             $fields['display_name']['nl'] = $this->serviceProvider->entityId;
         }
 
-        if (!empty($this->serviceProvider->displayNamePt)) {
-            $fields['display_name']['pt'] = $this->serviceProvider->displayNamePt;
+        if (!empty($this->serviceProvider->getMdui()->hasDisplayName('pt'))) {
+            $fields['display_name']['pt'] = $this->serviceProvider->getMdui()->getDisplayName('pt');
         } elseif (!empty($this->serviceProvider->namePt)) {
             $fields['display_name']['pt'] = $this->serviceProvider->namePt;
         } else {
@@ -112,6 +113,7 @@ final class Consent
 
     private function getOrganizationDisplayNameFields(): array
     {
+        $fields = [];
         if (!empty($this->serviceProvider->organizationEn->displayName)) {
             $fields['organization_display_name']['en'] = $this->serviceProvider->organizationEn->displayName;
         } elseif (!empty($this->serviceProvider->organizationEn->name)) {
