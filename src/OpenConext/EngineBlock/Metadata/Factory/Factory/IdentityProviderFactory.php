@@ -77,6 +77,14 @@ class IdentityProviderFactory
         return $this->buildIdentityProviderFromEntity($entity, $keyId);
     }
 
+    /**
+     * Use this method to create an IdP entity that is displayed on the IdPs metadata overview.
+     */
+    public function createRealIdentityProviderEntityFromEntity(IdentityProvider $entity, ?string $keyId): IdentityProviderEntityInterface
+    {
+        return $this->buildRealIdentityProviderFromEntity($entity, $keyId);
+    }
+
     private function buildIdentityProviderOrmEntity(string $entityId): IdentityProvider
     {
         $entity = new IdentityProvider($entityId, Mdui::emptyMdui());
@@ -120,6 +128,29 @@ class IdentityProviderFactory
         // and SSO location are overridden
         return new IdentityProviderNameFallbackHelper(
             new ProxiedIdentityProvider(
+                new IdentityProviderEntity($entity),
+                $this->engineBlockConfiguration,
+                $keyId,
+                $this->keyPairFactory->buildFromIdentifier($keyId),
+                $this->urlProvider
+            )
+        );
+    }
+
+    /**
+     * This method will create an IdP entity from a regular entity
+     *
+     * The IdP is decorated with _actual_ properties from the proxied IdP, like the SSO location, Contact Persons and so forth.
+     *
+     * - IdentityProviderEntity: The adapter to convert the ORM entity to support the immutable IdentityProviderEntityInterface interface
+     * - RealProxiedIdentityProvider: Set the functional fields to act as an IdP proxied by EngineBlock
+     */
+    private function buildRealIdentityProviderFromEntity(IdentityProvider $entity, ?string $keyId): IdentityProviderEntityInterface
+    {
+        // Set IdP specific properties where the IdP is proxied by EngineBlock. So the EB certificate, contact persons
+        // and SSO location are overridden
+        return new IdentityProviderNameFallbackHelper(
+            new RealProxiedIdentityProvider(
                 new IdentityProviderEntity($entity),
                 $this->engineBlockConfiguration,
                 $keyId,

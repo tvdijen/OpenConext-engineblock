@@ -86,6 +86,17 @@ class MetadataController
         return $response;
     }
 
+    public function allRealIdpsMetadataAction(Request $request, string $keyId = null): Response
+    {
+        $metadataXml = $this->metadataService->metadataForIdps(null, $keyId);
+
+        // 6. Return the signed metadata as an XML response
+        $response = new Response($metadataXml);
+        $response->headers->set('Content-Type', 'text/xml');
+
+        return $response;
+    }
+
     public function stepupMetadataAction(string $keyId = null): Response
     {
         if (empty($keyId)) {

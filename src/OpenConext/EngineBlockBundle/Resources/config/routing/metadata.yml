@@ -48,6 +48,22 @@ metadata_all_idps_key:
     requirements:
         keyId: .+
 
+### Real IdPs
+metadata_all_real_idps:
+    path:       '/authentication/proxy/real-idps-metadata'
+    methods:    [GET]
+    defaults:
+        _controller: engineblock.controller.authentication.metadata:allRealIdpsMetadataAction
+        keyId: ~
+
+metadata_all_real_idps_key:
+    path:       '/authentication/proxy/real-idps-metadata/key:{keyId}'
+    methods:    [GET]
+    defaults:
+        _controller: engineblock.controller.authentication.metadata:allRealIdpsMetadataAction
+    requirements:
+        keyId: .+
+
 ### Stepup
 metadata_stepup:
     path:       '/authentication/stepup/metadata'
