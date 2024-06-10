@@ -23,6 +23,9 @@ service_provider:
 metadata:
     resource: routing/metadata.yml
 
+ketenfo:
+    resource: routing/ketenfo.yml
+
 feedback:
     resource: routing/feedback.yml
 

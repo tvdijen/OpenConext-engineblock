@@ -1,0 +1,7 @@
+## KetenFO metadata
+
+metadata_ketenfo:
+    path:       '/authentication/proxy/ketenfo-metadata'
+    methods:    [GET]
+    defaults:
+        _controller: engineblock.controller.authentication.ketenfometadata:ketenfoMetadataAction

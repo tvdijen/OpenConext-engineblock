@@ -21,6 +21,7 @@ use OpenConext\EngineBlock\Metadata\Entity\IdentityProvider;
 use OpenConext\EngineBlock\Metadata\Factory\Adapter\IdentityProviderEntity;
 use OpenConext\EngineBlock\Metadata\Factory\Decorator\EngineBlockIdentityProvider;
 use OpenConext\EngineBlock\Metadata\Factory\Decorator\EngineBlockIdentityProviderInformation;
+use OpenConext\EngineBlock\Metadata\Factory\Decorator\KetenfoIdentityProvider;
 use OpenConext\EngineBlock\Metadata\Factory\Decorator\ProxiedIdentityProvider;
 use OpenConext\EngineBlock\Metadata\Factory\Helper\IdentityProviderNameFallbackHelper;
 use OpenConext\EngineBlock\Metadata\Factory\IdentityProviderEntityInterface;
@@ -77,6 +78,14 @@ class IdentityProviderFactory
         return $this->buildIdentityProviderFromEntity($entity, $keyId);
     }
 
+    /**
+     * Use this method to create an IdP entity that is displayed on the IdPs metadata overview.
+     */
+    public function createKetenfoIdentityProviderEntityFromEntity(IdentityProvider $entity): IdentityProviderEntityInterface
+    {
+        return $this->buildKetenfoIdentityProviderFromEntity($entity);
+    }
+
     private function buildIdentityProviderOrmEntity(string $entityId): IdentityProvider
     {
         $entity = new IdentityProvider($entityId, Mdui::emptyMdui());
@@ -126,6 +135,26 @@ class IdentityProviderFactory
                 $this->keyPairFactory->buildFromIdentifier($keyId),
                 $this->urlProvider
             )
+        );
+    }
+
+
+    /**
+     * This method will create an IdP entity from a regular entity
+     *
+     * The IdP is decorated with _actual_ properties from the proxied IdP, like the SSO location, Contact Persons and so forth.
+     *
+     * - IdentityProviderEntity: The adapter to convert the ORM entity to support the immutable IdentityProviderEntityInterface interface
+     * - KetenfoIdentityProvider: Set the actual data from remote IDPs connected to EngineBlock
+     */
+    private function buildKetenfoIdentityProviderFromEntity(IdentityProvider $entity): IdentityProviderEntityInterface
+    {
+        // Set IdP specific properties where the IdP is proxied by EngineBlock. So the EB certificate, contact persons
+        // and SSO location are overridden
+        return new IdentityProviderNameFallbackHelper(
+            new KetenfoIdentityProvider(
+                new IdentityProviderEntity($entity),
+            ),
         );
     }
 }

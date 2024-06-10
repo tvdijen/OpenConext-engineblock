@@ -168,6 +168,11 @@ services:
             - '@OpenConext\EngineBlock\Metadata\X509\KeyPairFactory'
             - '@engineblock.metadata.repository.idps_metadata'
 
+    OpenConext\EngineBlock\Xml\KetenfoMetadataProvider:
+        arguments:
+            - '@OpenConext\EngineBlock\Xml\MetadataRenderer'
+            - '@engineblock.metadata.repository.ketenfo_metadata'
+
     engineblock.authentication.user_directory:
         class: OpenConext\EngineBlockBundle\Authentication\Service\UserService
         arguments:
@@ -258,6 +263,13 @@ services:
 
     engineblock.metadata.repository.idps_metadata:
         class: OpenConext\EngineBlock\Metadata\MetadataRepository\IdpsMetadataRepository
+        arguments:
+            - "@engineblock.metadata.repository.cached_doctrine"
+            - "@engineblock.factory.identity_provider_factory"
+            - "@engineblock.url_provider"
+
+    engineblock.metadata.repository.ketenfo_metadata:
+        class: OpenConext\EngineBlock\Metadata\MetadataRepository\KetenfoMetadataRepository
         arguments:
             - "@engineblock.metadata.repository.cached_doctrine"
             - "@engineblock.factory.identity_provider_factory"

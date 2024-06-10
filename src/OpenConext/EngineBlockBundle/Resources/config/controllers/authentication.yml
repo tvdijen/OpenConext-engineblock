@@ -42,6 +42,11 @@ services:
             - '@OpenConext\EngineBlock\Xml\MetadataProvider'
             - '@OpenConext\EngineBlock\Metadata\Factory\ValueObject\EngineBlockConfiguration'
 
+    engineblock.controller.authentication.ketenfometadata:
+        class: OpenConext\EngineBlockBundle\Controller\KetenfoMetadataController
+        arguments:
+            - '@OpenConext\EngineBlock\Xml\KetenfoMetadataProvider'
+
     engineblock.controller.authentication.certificate:
         class: OpenConext\EngineBlockBundle\Controller\CertificateController
         arguments:
