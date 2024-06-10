@@ -100,7 +100,9 @@ class IdentityProviderFactory
                 $this->engineBlockConfiguration
             ),
             $keyId,
-            $this->keyPairFactory->buildFromIdentifier($keyId),
+            ($keyId === KeyPairFactory::ROLLOVER_KEY_PAIR_IDENTIFIER)
+                ? $this->keyPairFactory->buildAll()
+                : [$this->keyPairFactory->buildFromIdentifier($keyId)],
             $this->urlProvider
         );
     }

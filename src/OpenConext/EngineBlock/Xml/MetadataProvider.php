@@ -78,6 +78,9 @@ class MetadataProvider
         $serviceProvider = $this->spFactory->createEngineBlockEntityFrom($keyId);
 
         if ($serviceProvider) {
+            if ($keyId === KeyPairFactory::ROLLOVER_KEY_PAIR_IDENTIFIER) {
+                $keyId = KeyPairFactory::DEFAULT_KEY_PAIR_IDENTIFIER;
+            }
             return $this->renderer->fromServiceProviderEntity($serviceProvider, $keyId);
         }
         throw new EntityCanNotBeFoundException(sprintf('Unable to find the SP with entity ID "%s".', $serviceProvider->getEntityId()));
@@ -91,6 +94,9 @@ class MetadataProvider
         $identityProvider = $this->idpFactory->createEngineBlockEntityFrom($keyId);
 
         if ($identityProvider) {
+            if ($keyId === KeyPairFactory::ROLLOVER_KEY_PAIR_IDENTIFIER) {
+                $keyId = KeyPairFactory::DEFAULT_KEY_PAIR_IDENTIFIER;
+            }
             return $this->renderer->fromIdentityProviderEntity($identityProvider, $keyId);
         }
         throw new EntityCanNotBeFoundException(sprintf('Unable to find the SP with entity ID "%s".', $identityProvider->getEntityId()));
@@ -124,6 +130,9 @@ class MetadataProvider
         }
 
         // 3. Render and sign the document
+        if ($keyId === KeyPairFactory::ROLLOVER_KEY_PAIR_IDENTIFIER) {
+            $keyId = KeyPairFactory::DEFAULT_KEY_PAIR_IDENTIFIER;
+        }
         return $this->renderer->fromIdentityProviderEntities($identityProviders, $keyId);
     }
 
@@ -140,6 +149,9 @@ class MetadataProvider
     {
         $serviceProvider = $this->spFactory->createStepupEntityFrom($keyId);
 
+        if ($keyId === KeyPairFactory::ROLLOVER_KEY_PAIR_IDENTIFIER) {
+            $keyId = KeyPairFactory::DEFAULT_KEY_PAIR_IDENTIFIER;
+        }
         return $this->renderer->fromServiceProviderEntity($serviceProvider, $keyId);
     }
 

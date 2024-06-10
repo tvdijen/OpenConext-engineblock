@@ -25,8 +25,9 @@ use OpenConext\EngineBlockBundle\Exception\UnknownKeyIdException;
 class KeyPairFactory
 {
     const DEFAULT_KEY_PAIR_IDENTIFIER = 'default';
+    const ROLLOVER_KEY_PAIR_IDENTIFIER = 'rollover';
 
-    private $keyPairConfiguration = [];
+    private array $keyPairConfiguration = [];
 
     /**
      * @param array $keyPairConfiguration
@@ -42,7 +43,7 @@ class KeyPairFactory
      *
      * @throws RuntimeException
      */
-    public function buildFromIdentifier(?string $identifier) : X509KeyPair
+    public function buildFromIdentifier(?string $identifier): X509KeyPair
     {
         if ($identifier === null) {
             $identifier = self::DEFAULT_KEY_PAIR_IDENTIFIER;
@@ -56,5 +57,21 @@ class KeyPairFactory
             return new X509KeyPair($publicKey, $privateKey);
         }
         throw new UnknownKeyIdException($identifier);
+    }
+
+    /**
+     * @return array<X509KeyPair>
+     *
+     * @throws RuntimeException
+     */
+    public function buildAll(): array
+    {
+        $pairs = [];
+
+        foreach ($this->keyPairConfiguration as $keyId => $x) {
+            $pairs[] = $this->buildFromIdentifier($keyId);
+        }
+
+        return $pairs;
     }
 }
