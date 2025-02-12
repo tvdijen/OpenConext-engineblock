@@ -18,11 +18,13 @@
 
 namespace OpenConext\EngineBlockBundle\Controller\Api;
 
+use Exception;
 use OpenConext\EngineBlock\Metadata\Entity\Assembler\MetadataAssemblerInterface;
 use OpenConext\EngineBlock\Metadata\MetadataRepository\DoctrineMetadataPushRepository;
 use OpenConext\EngineBlockBundle\Configuration\FeatureConfiguration;
 use OpenConext\EngineBlockBundle\Configuration\FeatureConfigurationInterface;
 use OpenConext\EngineBlockBundle\Http\Exception\ApiAccessDeniedHttpException;
+use OpenConext\EngineBlockBundle\Http\Exception\ApiInternalServerErrorHttpException;
 use OpenConext\EngineBlockBundle\Http\Exception\ApiMethodNotAllowedHttpException;
 use OpenConext\EngineBlockBundle\Http\Exception\ApiNotFoundHttpException;
 use OpenConext\EngineBlockBundle\Http\Exception\BadApiRequestHttpException;
@@ -34,6 +36,8 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 /**
  * @SuppressWarnings(PHPMD.CouplingBetweenObjects) Static calls, factories, and having to check HTTP methods which is
  *                                                 usually done by Symfony
+ * @SuppressWarnings(PHPMD.CyclomaticComplexity) Extensive role validation
+ * @SuppressWarnings(PHPMD.NPathComplexity) Extensive role validation
  */
 class ConnectionsController
 {
@@ -109,11 +113,19 @@ class ConnectionsController
             throw new BadApiRequestHttpException('Unrecognized structure for JSON');
         }
 
-        $roles     = $this->pushMetadataAssembler->assemble($body->connections);
+        try {
+            $roles = $this->pushMetadataAssembler->assemble($body->connections);
+        } catch (Exception $exception) {
+            throw new BadApiRequestHttpException(sprintf('Unable to assemble the pushed metadata: %s', $exception->getMessage()), $exception);
+        }
 
         unset($body);
 
-        $result    = $this->repository->synchronize($roles);
+        try {
+            $result = $this->repository->synchronize($roles);
+        } catch (Exception $exception) {
+            throw new ApiInternalServerErrorHttpException('Unable to synchronize the assembled roles to the repository', $exception);
+        }
 
         return new JsonResponse($result);
     }

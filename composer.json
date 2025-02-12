@@ -2,7 +2,11 @@
     "name": "openconext/engineblock",
     "description": "OpenConext SAML proxy",
     "type": "project",
-    "keywords": ["saml", "proxy", "openconext"],
+    "keywords": [
+        "saml",
+        "proxy",
+        "openconext"
+    ],
     "homepage": "http://www.openconext.org",
     "license": "Apache-2.0",
     "support": {
@@ -11,7 +15,7 @@
         "source": "https://github.com/OpenConext/OpenConext-engineblock"
     },
     "require": {
-        "php": "7.2",
+        "php": "~7.2",
         "ext-dom": "*",
         "ext-json": "*",
         "ext-mbstring": "*",
@@ -30,7 +34,7 @@
         "ramsey/uuid": "^3.3.0",
         "sensio/framework-extra-bundle": "^3.0",
         "sensio/generator-bundle": "^3.0",
-        "simplesamlphp/saml2": "^4.1",
+        "simplesamlphp/saml2": "4.16.*",
         "swiftmailer/swiftmailer": "^5.4",
         "symfony/monolog-bundle": "^3.1.0",
         "symfony/swiftmailer-bundle": "^2.6",
@@ -39,6 +43,7 @@
         "twig/twig": "^2.0"
     },
     "require-dev": {
+        "ext-zlib": "*",
         "behat/behat": "~3.0",
         "behat/mink": "~1.7",
         "behat/mink-extension": "~2.0",
@@ -90,7 +95,11 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "OpenConext\\": ["tests/unit/OpenConext/", "tests/integration/OpenConext/", "tests/functional/OpenConext/"]
+            "OpenConext\\": [
+                "tests/unit/OpenConext/",
+                "tests/integration/OpenConext/",
+                "tests/functional/OpenConext/"
+            ]
         },
         "files": [
             "vendor/symfony/symfony/src/Symfony/Component/VarDumper/Resources/functions/dump.php"
@@ -115,6 +124,25 @@
             {
                 "file": "app/config/functional_testing.yml"
             }
+        ]
+    },
+    "archive": {
+        "exclude": [
+            "*",
+            ".*",
+            "!/.env",
+            "*/Tests/*",
+            "!/app",
+            "!/application",
+            "!/component_info",
+            "!/database",
+            "!/languages",
+            "!/library",
+            "!/src",
+            "!/theme",
+            "/theme/node_modules",
+            "!/vendor",
+            "!/web"
         ]
     }
 }
