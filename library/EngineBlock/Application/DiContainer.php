@@ -463,6 +463,14 @@ class EngineBlock_Application_DiContainer extends Pimple
         return $this->container->get('engineblock.service.processing_state_helper');
     }
 
+    /**
+     * @return \OpenConext\EngineBlockBundle\Service\DiscoverySelectionService
+     */
+    public function getDiscoverySelectionService()
+    {
+        return $this->container->get('engineblock.service.discovery_selection_service');
+    }
+
     public function getMfaHelper(): MfaHelperInterface
     {
         return $this->container->get('engineblock.service.mfa_helper');
@@ -534,6 +542,12 @@ class EngineBlock_Application_DiContainer extends Pimple
     public function getStepupEntityIdOverrideValue()
     {
         return $this->container->getParameter('stepup.sfo.override_engine_entityid');
+    }
+
+    /** @return string[] */
+    public function getStepupUserAttributes(): array
+    {
+        return $this->container->getParameter('stepup.callout_user_attributes');
     }
 
     public function getCookieDomain()

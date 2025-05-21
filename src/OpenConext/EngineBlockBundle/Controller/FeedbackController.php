@@ -202,6 +202,19 @@ class FeedbackController
     }
 
     /**
+     * @param Request $request
+     * @return Response
+     * @throws \EngineBlock_Exception
+     */
+    public function unknownSigningKeyAction(Request $request)
+    {
+        return new Response(
+            $this->twig->render('@theme/Authentication/View/Feedback/unknown-signing-key.html.twig'),
+            400
+        );
+    }
+
+    /**
      * @return Response
      * @throws \EngineBlock_Exception
      */
@@ -451,6 +464,14 @@ class FeedbackController
         return new Response(
             $this->twig->render('@theme/Authentication/View/Feedback/stuck-in-authentication-loop.html.twig'),
             400
+        );
+    }
+
+    public function authenticationLimitExceededAction()
+    {
+        return new Response(
+            $this->twig->render('@theme/Authentication/View/Feedback/authentication-limit-exceeded.html.twig'),
+            429
         );
     }
 

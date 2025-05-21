@@ -182,7 +182,7 @@ QUERY;
         return $this;
     }
 
-    public function registerIdp($name, $entityId, $ssoLocation, $certData = '')
+    public function registerIdp($name, $entityId, $ssoLocation, $certData = '', $discoveries = [])
     {
         $idp = new IdentityProvider($entityId);
         $this->assembleEntityName($idp, $name);
@@ -213,6 +213,8 @@ QUERY;
             $sp->allowedIdpEntityIds[] = $idp->entityId;
             $this->entityManager->persist($sp);
         }
+
+        $idp->setDiscoveries($discoveries);
 
         $this->entityManager->persist($idp);
 
@@ -486,6 +488,13 @@ QUERY;
     {
         $mfaEntities = MfaEntityCollection::fromMetadataPush($mfaEntities);
         $this->setCoin($this->getIdentityProvider($entityId), 'mfaEntities', $mfaEntities);
+
+        return $this;
+    }
+
+    public function setDefaultRequestedAuthContext(string $entityId, string $defaultRAC): self
+    {
+        $this->setCoin($this->getIdentityProvider($entityId), 'defaultRAC', $defaultRAC);
 
         return $this;
     }

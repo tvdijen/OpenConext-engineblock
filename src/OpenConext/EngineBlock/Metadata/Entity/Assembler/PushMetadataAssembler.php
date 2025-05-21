@@ -37,13 +37,16 @@ use OpenConext\EngineBlock\Metadata\Organization;
 use OpenConext\EngineBlock\Metadata\Service;
 use OpenConext\EngineBlock\Metadata\ShibMdScope;
 use OpenConext\EngineBlock\Metadata\StepupConnections;
+use OpenConext\EngineBlock\Metadata\Discovery;
 use OpenConext\EngineBlock\Metadata\Utils;
 use OpenConext\EngineBlock\Metadata\X509\X509CertificateFactory;
 use OpenConext\EngineBlock\Metadata\X509\X509CertificateLazyProxy;
 use OpenConext\EngineBlock\Validator\ValidatorInterface;
+use OpenConext\EngineBlockBundle\Localization\LanguageSupportProvider;
 use Psr\Log\LoggerInterface;
 use RuntimeException;
 use stdClass;
+
 use function array_key_exists;
 
 /**
@@ -57,6 +60,11 @@ class PushMetadataAssembler implements MetadataAssemblerInterface
     private $allowedAcsLocationsValidator;
 
     /**
+     * @var DiscoveryAssembler
+     */
+    private $discoveryAssembler;
+
+    /**
      * @var LoggerInterface
      */
     private $logger;
@@ -66,9 +74,13 @@ class PushMetadataAssembler implements MetadataAssemblerInterface
      */
     private const FIELDS_MAX_LENGTH = 255;
 
-    public function __construct(ValidatorInterface $allowedAcsLocations, LoggerInterface $logger)
-    {
+    public function __construct(
+        ValidatorInterface $allowedAcsLocations,
+        LanguageSupportProvider $languageSupportProvider,
+        LoggerInterface $logger
+    ) {
         $this->allowedAcsLocationsValidator = $allowedAcsLocations;
+        $this->discoveryAssembler = new DiscoveryAssembler($languageSupportProvider);
         $this->logger = $logger;
     }
 
@@ -210,88 +222,26 @@ class PushMetadataAssembler implements MetadataAssemblerInterface
 
         $properties += $this->assembleAttributeReleasePolicy($connection);
         $properties += $this->assembleAssertionConsumerServices($connection);
-        $properties += $this->setPathFromObjectBool(
-            array(
-                $connection,
-                'metadata:coin:transparant_issuer'
-            ),
-            'isTransparentIssuer'
-        );
-        $properties += $this->setPathFromObjectBool(
-            array(
-                $connection,
-                'metadata:coin:trusted_proxy'
-            ),
-            'isTrustedProxy'
-        );
-        $properties += $this->setPathFromObjectBool(
-            array(
-                $connection,
-                'metadata:coin:display_unconnected_idps_wayf'
-            ),
-            'displayUnconnectedIdpsWayf'
-        );
+        $properties += $this->setPathFromObjectBool([$connection, 'metadata:coin:transparant_issuer'], 'isTransparentIssuer');
+        $properties += $this->setPathFromObjectBool([$connection, 'metadata:coin:trusted_proxy'], 'isTrustedProxy');
+        $properties += $this->setPathFromObjectBool([$connection, 'metadata:coin:display_unconnected_idps_wayf'], 'displayUnconnectedIdpsWayf');
 
         $properties += $this->assembleIsConsentRequired($connection);
 
-        $properties += $this->setPathFromObjectString(
-            array(
-                $connection,
-                'metadata:coin:eula'
-            ),
-            'termsOfServiceUrl'
-        );
+        $properties += $this->setPathFromObjectString([$connection, 'metadata:coin:eula'], 'termsOfServiceUrl');
+        $properties += $this->setPathFromObjectBool([$connection, 'metadata:coin:do_not_add_attribute_aliases'], 'skipDenormalization');
         $properties += $this->setPathFromObjectBool(
-            array(
-                $connection,
-                'metadata:coin:do_not_add_attribute_aliases'
-            ),
-            'skipDenormalization'
-        );
-        $properties += $this->setPathFromObjectBool(
-            array(
-                $connection,
-                'metadata:coin:policy_enforcement_decision_required'
-            ),
+            [$connection, 'metadata:coin:policy_enforcement_decision_required'],
             'policyEnforcementDecisionRequired'
         );
+        $properties += $this->setPathFromObjectBool([$connection, 'metadata:coin:requesterid_required'], 'requesteridRequired');
+        $properties += $this->setPathFromObjectBool([$connection, 'metadata:coin:sign_response'], 'signResponse');
+        $properties += $this->setPathFromObjectString([$connection, 'metadata:coin:stepup:requireloa'], 'stepupRequireLoa');
+        $properties += $this->setPathFromObjectBool([$connection, 'metadata:coin:stepup:allow_no_token'], 'stepupAllowNoToken');
+        $properties += $this->setPathFromObjectBool([$connection, 'metadata:coin:stepup:forceauthn'], 'stepupForceAuthn');
 
-        $properties += $this->setPathFromObjectBool(
-            array(
-                $connection,
-                'metadata:coin:requesterid_required'
-            ),
-            'requesteridRequired'
-        );
+        $properties += $this->setPathFromObjectBool([$connection, 'metadata:coin:collab_enabled'], 'collabEnabled');
 
-        $properties += $this->setPathFromObjectBool(
-            array(
-                $connection,
-                'metadata:coin:sign_response'
-            ),
-            'signResponse'
-        );
-        $properties += $this->setPathFromObjectString(
-            array(
-                $connection,
-                'metadata:coin:stepup:requireloa'
-            ),
-            'stepupRequireLoa'
-        );
-        $properties += $this->setPathFromObjectBool(
-            array(
-                $connection,
-                'metadata:coin:stepup:allow_no_token'
-            ),
-            'stepupAllowNoToken'
-        );
-        $properties += $this->setPathFromObjectBool(
-            array(
-                $connection,
-                'metadata:coin:stepup:forceauthn'
-            ),
-            'stepupForceAuthn'
-        );
         return Utils::instantiate(
             ServiceProvider::class,
             $properties
@@ -315,6 +265,9 @@ class PushMetadataAssembler implements MetadataAssemblerInterface
 
         $properties += $this->assembleStepupConnections($connection);
         $properties += $this->assembleMfaEntities($connection);
+
+        $properties += $this->discoveryAssembler->assembleDiscoveries($connection);
+        $properties += $this->setPathFromObjectString(array($connection, 'metadata:coin:defaultRAC'), 'defaultRAC');
 
         return Utils::instantiate(
             IdentityProvider::class,
@@ -474,6 +427,7 @@ class PushMetadataAssembler implements MetadataAssemblerInterface
         if ($limitlength) {
             $reference = $this->limitValueLength($reference);
         }
+
         return array($to => (string)$reference);
     }
 

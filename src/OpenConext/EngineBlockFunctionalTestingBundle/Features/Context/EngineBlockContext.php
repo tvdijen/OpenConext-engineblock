@@ -355,6 +355,21 @@ class EngineBlockContext extends AbstractSubContext
     }
 
     /**
+     * @Given /^I select IdP by label "([^"]*)" on the WAYF$/
+     */
+    public function iSelectByLabelOnTheWAYF($idpLabel)
+    {
+        $selector = '[data-title="' . $idpLabel . '"] button.idp__submit';
+        $mink = $this->getMinkContext()->getSession()->getPage();
+        $button = $mink->find('css', $selector);
+        if (!$button) {
+            throw new RuntimeException(sprintf('Unable to find button with selector "%s"', $selector));
+        }
+
+        $button->click();
+    }
+
+    /**
      * @Then /^The process form should have the "([^"]*)" field$/
      */
     public function iSeeACertainFormFieldOnTheProcessForm($formFieldName)
@@ -525,17 +540,20 @@ class EngineBlockContext extends AbstractSubContext
     }
 
     /**
-     * @Given /^EngineBlock is configured to allow a maximum of (\d+) authentication procedures within a time frame of (\d+) seconds$/
-     * @param int $timeFrameForAuthenticationLoopInSeconds
+     * @Given /^EngineBlock is configured to allow a maximum of (\d+) per SP within a timeframe of (\d+) seconds and with (\d+) authentications$/
      * @param int $maximumAuthenticationProceduresAllowed
+     * @param int $timeFrameForAuthenticationLoopInSeconds
+     * @param int $maxiumumAuth
      */
-    public function engineblockIsConfiguredToAllowAMaximumOfAuthenticationProceduresWithinATimeFrameOfSeconds(
+    public function engineblockIsConfiguredToAllowAMaximumOfAuthenticationProcedures(
         $maximumAuthenticationProceduresAllowed,
-        $timeFrameForAuthenticationLoopInSeconds
+        $timeFrameForAuthenticationLoopInSeconds,
+        $maximumAuthenticationsPerSession
     ) {
         $this->authenticationLoopGuard->saveAuthenticationLoopGuardConfiguration(
             (int) $maximumAuthenticationProceduresAllowed,
-            (int) $timeFrameForAuthenticationLoopInSeconds
+            (int) $timeFrameForAuthenticationLoopInSeconds,
+            (int) $maximumAuthenticationsPerSession
         );
         $this->usingAuthenticationLoopGuard = true;
     }
@@ -629,6 +647,7 @@ class EngineBlockContext extends AbstractSubContext
         $authnRequest->loadXML($authnRequestXml);
 
         $xpathObject = new DOMXPath($authnRequest);
+        $xpathObject->registerNamespace('gssp', 'urn:mace:surf.nl:stepup:gssp-extensions');
         $nodeList = $xpathObject->query($xpath);
 
         if (!$nodeList || $nodeList->length === 0) {

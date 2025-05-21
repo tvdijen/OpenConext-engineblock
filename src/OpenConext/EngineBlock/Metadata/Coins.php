@@ -44,7 +44,8 @@ class Coins
         $disableScoping,
         $additionalLogging,
         $signatureMethod,
-        $stepupForceAuthn
+        $stepupForceAuthn,
+        $collabEnabled
     ) {
         return new self([
             'isConsentRequired' => $isConsentRequired,
@@ -62,6 +63,7 @@ class Coins
             'stepupAllowNoToken' => $stepupAllowNoToken,
             'stepupRequireLoa' => $stepupRequireLoa,
             'stepupForceAuthn' => $stepupForceAuthn,
+            'collabEnabled' => $collabEnabled,
         ]);
     }
 
@@ -73,7 +75,8 @@ class Coins
         $disableScoping,
         $additionalLogging,
         $signatureMethod,
-        $mfaEntities
+        $mfaEntities,
+        $defaultRAC
     ) {
         return new self([
             'guestQualifier' => $guestQualifier,
@@ -84,6 +87,7 @@ class Coins
             'signatureMethod' => $signatureMethod,
             'stepupConnections' => $stepupConnections,
             'mfaEntities' => $mfaEntities,
+            'defaultRAC' => $defaultRAC,
         ]);
     }
 
@@ -190,6 +194,11 @@ class Coins
     }
 
     // IDP
+    public function defaultRAC()
+    {
+        return $this->getValue('defaultRAC');
+    }
+
     public function guestQualifier()
     {
         return $this->getValue('guestQualifier', IdentityProvider::GUEST_QUALIFIER_ALL);
@@ -227,6 +236,11 @@ class Coins
     public function signatureMethod()
     {
         return $this->getValue('signatureMethod', XMLSecurityKey::RSA_SHA256);
+    }
+
+    public function collabEnabled()
+    {
+        return $this->getValue('collabEnabled', false);
     }
 
     public function mfaEntities(): MfaEntityCollection
