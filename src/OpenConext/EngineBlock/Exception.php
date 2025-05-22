@@ -16,7 +16,11 @@
  * limitations under the License.
  */
 
-class EngineBlock_Exception extends Exception
+namespace OpenConext\EngineBlock\Exception;
+
+use Exception as BuiltinException;
+
+class Exception extends BuiltinException
 {
     /**
      * Emergency; system is unstable
@@ -84,7 +88,7 @@ class EngineBlock_Exception extends Exception
     public $idpEntityId;
     public $description;
 
-    public function __construct($message, $severity = self::CODE_ERROR, Exception $previous = null)
+    public function __construct($message, $severity = self::CODE_ERROR, BuiltinException $previous = null)
     {
         parent::__construct($message, 0, $previous);
         $this->_severity = $severity;

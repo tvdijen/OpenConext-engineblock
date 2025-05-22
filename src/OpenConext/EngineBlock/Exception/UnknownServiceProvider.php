@@ -16,6 +16,22 @@
  * limitations under the License.
  */
 
-class EngineBlock_Exception_MissingRequiredFields extends EngineBlock_Exception
+namespace OpenConext\EngineBlock\Exception;
+
+use Exception;
+
+class UnknownServiceProvider extends Exception
 {
+    private $_entityId;
+
+    function __construct($message, $entityId)
+    {
+        parent::__construct($message);
+        $this->_entityId = $entityId;
+    }
+
+    public function getEntityId()
+    {
+        return $this->_entityId;
+    }
 }

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Copyright 2025 SURFnet B.V.
+ * Copyright 2010 SURFnet B.V.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,6 +16,24 @@
  * limitations under the License.
  */
 
-class EngineBlock_Exception_PdpCheckFailed extends EngineBlock_Exception
+namespace OpenConext\EngineBlock\Exception;
+
+use Exception;
+use OpenConext\EngineBlock\Metadata\Entity\ServiceProvider;
+
+class UnknownRequesterIdInAuthnRequest extends Exception
 {
+    /**
+     * @var ServiceProvider
+     */
+    private $trustedProxyServiceProvider;
+
+    /**
+     * @param ServiceProvider $trustedProxyServiceProvider
+     */
+    public function __construct(
+        ServiceProvider $trustedProxyServiceProvider
+    ) {
+        $this->trustedProxyServiceProvider = $trustedProxyServiceProvider;
+    }
 }

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Copyright 2010 SURFnet B.V.
+ * Copyright 2025 SURFnet B.V.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,25 +16,10 @@
  * limitations under the License.
  */
 
-class EngineBlock_Exception_UnknownIdentityProvider extends Exception
+namespace OpenConext\EngineBlock\Exception;
+
+use OpenConext\EngineBlock\Exception as EngineBlockException;
+
+class PdpCheckFailed extends EngineBlockException
 {
-    private $_entityId;
-    private $_destination;
-
-    function __construct($message, $entityId, $destination)
-    {
-        parent::__construct($message);
-        $this->_entityId = $entityId;
-        $this->_destination = $destination;
-    }
-
-    public function getEntityId()
-    {
-        return $this->_entityId;
-    }
-
-    public function getDestination()
-    {
-        return $this->_destination;
-    }
 }
